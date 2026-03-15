@@ -6,6 +6,30 @@ export interface QuestStateEntry {
   checkpoints: boolean[];
 }
 
+/** S.P.E.C.I.A.L. attribute points */
+export interface SpecialAttributes {
+  S: number; // Strength  — wellness/physical quests
+  P: number; // Perception — signals/research quests
+  E: number; // Endurance  — long-term/streak quests
+  C: number; // Charisma   — social/community quests
+  I: number; // Intelligence — school/code quests
+  A: number; // Agility    — productivity/workflow quests
+  L: number; // Luck       — creative/random quests
+}
+
+export type PlayerClass = "Coder" | "Artist" | "Scholar" | "Hacker" | "Musician" | null;
+
+export interface ComboState {
+  count: number;           // consecutive quests completed within 30 min of each other
+  lastQuestTime: number;   // Date.now() of last quest completion
+  multiplier: number;      // 1, 1.5, or 2
+}
+
+export interface DailyBonus {
+  questId: number;
+  date: string; // "YYYY-MM-DD"
+}
+
 export interface UserState {
   totalXP: number;
   level: number;
@@ -13,7 +37,15 @@ export interface UserState {
   questStates: Record<number, QuestStateEntry>;
   achievements: string[];
   startDate: string;
+  // RPG extensions
+  inventory: string[];           // earned item IDs
+  selectedClass: PlayerClass;
+  special: SpecialAttributes;
+  combo: ComboState;
+  dailyBonus: DailyBonus | null;
 }
+
+const DEFAULT_SPECIAL: SpecialAttributes = { S: 0, P: 0, E: 0, C: 0, I: 0, A: 0, L: 0 };
 
 export function getDefaultState(): UserState {
   return {
@@ -23,6 +55,25 @@ export function getDefaultState(): UserState {
     questStates: {},
     achievements: [],
     startDate: new Date().toISOString(),
+    inventory: [],
+    selectedClass: null,
+    special: { ...DEFAULT_SPECIAL },
+    combo: { count: 0, lastQuestTime: 0, multiplier: 1 },
+    dailyBonus: null,
+  };
+}
+
+/** Migrate older saved state that may be missing new fields */
+function migrateState(raw: Partial<UserState>): UserState {
+  const defaults = getDefaultState();
+  return {
+    ...defaults,
+    ...raw,
+    special: { ...defaults.special, ...(raw.special ?? {}) },
+    combo: raw.combo ?? defaults.combo,
+    inventory: raw.inventory ?? [],
+    selectedClass: raw.selectedClass ?? null,
+    dailyBonus: raw.dailyBonus ?? null,
   };
 }
 
@@ -31,7 +82,7 @@ export function loadState(): UserState {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return getDefaultState();
-    return JSON.parse(saved) as UserState;
+    return migrateState(JSON.parse(saved) as Partial<UserState>);
   } catch {
     return getDefaultState();
   }

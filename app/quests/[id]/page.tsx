@@ -11,6 +11,7 @@ import { getQuestStatus } from "@/lib/utils";
 import { fireQuestComplete } from "@/lib/confetti";
 import { soundTick, soundComplete } from "@/lib/sounds";
 import DifficultyStars from "@/components/quest/DifficultyStars";
+import { SkillList } from "@/components/ui/SkillBadge";
 import {
   ChevronLeft, ChevronRight, Lock, CheckCircle2, Clock, Zap, ArrowLeft
 } from "lucide-react";
@@ -164,6 +165,15 @@ export default function QuestDetailPage() {
             <p className="text-xs font-mono" style={{ color: "var(--text-secondary)" }}>
               {quest.quickStart}
             </p>
+          </div>
+        )}
+
+        {quest.skills?.length > 0 && (
+          <div className="mb-3">
+            <p className="text-[10px] font-mono uppercase tracking-wider mb-1.5" style={{ color: "var(--text-muted)" }}>
+              Skill oblasti
+            </p>
+            <SkillList skills={quest.skills} size="sm" showApps />
           </div>
         )}
 

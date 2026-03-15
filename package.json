@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.43.0",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -19,6 +20,9 @@
     "react-dom": "^19.0.0",
     "recharts": "^2.15.0",
     "tailwind-merge": "^3.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@sentry/cli", "sharp", "unrs-resolver"]
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

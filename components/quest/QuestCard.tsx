@@ -8,6 +8,8 @@ import { getQuestStatus, getCheckpointProgress } from "@/lib/utils";
 import { useQuestContext } from "@/context/QuestContext";
 import DifficultyStars from "./DifficultyStars";
 import AskAIModal from "./AskAIModal";
+import { SkillList } from "@/components/ui/SkillBadge";
+import ContextMenu from "@/components/ui/ContextMenu";
 import { Lock, CheckCircle2, ChevronRight } from "lucide-react";
 
 interface Props {
@@ -17,10 +19,11 @@ interface Props {
 }
 
 export default function QuestCard({ quest, compact = false, index = 0 }: Props) {
-  const { state } = useQuestContext();
+  const { state, completeQuest } = useQuestContext();
   const status = getQuestStatus(quest.id, state.questStates, quest.prerequisites);
   const progress = getCheckpointProgress(quest, state.questStates);
   const [showAI, setShowAI] = useState(false);
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
 
   return (
     <motion.div
@@ -48,11 +51,23 @@ export default function QuestCard({ quest, compact = false, index = 0 }: Props) 
 
       <AskAIModal quest={quest} open={showAI} onClose={() => setShowAI(false)} />
 
+      {ctxMenu && (
+        <ContextMenu
+          x={ctxMenu.x}
+          y={ctxMenu.y}
+          questId={quest.id}
+          onClose={() => setCtxMenu(null)}
+          onPin={() => setCtxMenu(null)}
+          onComplete={() => { completeQuest(quest.id); setCtxMenu(null); }}
+        />
+      )}
+
       <Link href={`/quests/${quest.id}`}>
         <motion.div
           whileHover={{ scale: 1.01, y: -2 }}
           whileTap={{ scale: 0.99 }}
           transition={{ duration: 0.15 }}
+          onContextMenu={(e) => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY }); }}
           className={`rounded-xl p-4 border transition-all duration-200 cursor-pointer relative overflow-hidden ${
             status === "completed" ? "shimmer-completed" : "glass-hover"
           }`}
@@ -123,21 +138,28 @@ export default function QuestCard({ quest, compact = false, index = 0 }: Props) 
             </span>
           </div>
 
-          {quest.tags.length > 0 && !compact && (
-            <div className="flex flex-wrap gap-1 mt-2.5">
-              {quest.tags.slice(0, 4).map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] px-1.5 py-0.5 rounded"
-                  style={{
-                    color: "var(--accent-secondary)",
-                    backgroundColor: "rgba(139,92,246,0.06)",
-                    border: "1px solid rgba(139,92,246,0.08)",
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
+          {!compact && (
+            <div className="flex flex-col gap-1.5 mt-2.5">
+              {quest.skills?.length > 0 && (
+                <SkillList skills={quest.skills} max={3} size="xs" />
+              )}
+              {quest.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {quest.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] px-1.5 py-0.5 rounded"
+                      style={{
+                        color: "var(--accent-secondary)",
+                        backgroundColor: "rgba(139,92,246,0.06)",
+                        border: "1px solid rgba(139,92,246,0.08)",
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import {
   UserState,
+  PlayerClass,
   loadState,
   saveState,
   getDefaultState,
@@ -16,6 +17,13 @@ import {
 import { QUESTS } from "@/lib/data/quests";
 import { getLevelInfo } from "@/lib/data/levels";
 import { ACHIEVEMENTS } from "@/lib/data/achievements";
+import { getClassDef, getClassXPMultiplier } from "@/lib/data/classes";
+import { computeSpecial } from "@/lib/data/special";
+import { computeEarnedItems } from "@/hooks/useInventory";
+import { computeDailyBonus } from "@/hooks/useDailyBonus";
+import { computeStreak } from "@/hooks/useStreak";
+
+const COMBO_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 interface QuestContextType {
   state: UserState;
@@ -23,14 +31,33 @@ interface QuestContextType {
   completeQuest: (questId: number) => void;
   uncompleteQuest: (questId: number) => void;
   resetAll: () => void;
+  selectClass: (cls: PlayerClass) => void;
   newlyUnlockedAchievements: string[];
   clearNewAchievements: () => void;
   justLeveledUp: boolean;
   newLevel: number;
   clearLevelUp: () => void;
+  /** Current combo count and multiplier */
+  comboCount: number;
+  comboMultiplier: number;
 }
 
 const QuestContext = createContext<QuestContextType | null>(null);
+
+function computeComboMultiplier(count: number): number {
+  if (count >= 5) return 2;
+  if (count >= 3) return 1.5;
+  return 1;
+}
+
+/** Sync daily bonus into state if it needs to rotate */
+function syncDailyBonus(s: UserState): UserState {
+  const bonus = computeDailyBonus(s);
+  if (bonus?.questId === s.dailyBonus?.questId && bonus?.date === s.dailyBonus?.date) {
+    return s;
+  }
+  return { ...s, dailyBonus: bonus };
+}
 
 export function QuestProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<UserState>(getDefaultState);
@@ -39,7 +66,11 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
   const [newLevel, setNewLevel] = useState(1);
 
   useEffect(() => {
-    setState(loadState());
+    const loaded = loadState();
+    // Sync daily bonus on mount
+    const synced = syncDailyBonus(loaded);
+    if (synced !== loaded) saveState(synced);
+    setState(synced);
   }, []);
 
   const checkAchievements = useCallback(
@@ -113,25 +144,73 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
         const quest = QUESTS.find((q) => q.id === questId);
         if (!quest) return prev;
 
+        // ── Combo multiplier ──────────────────────────────────────────────
+        const now = Date.now();
+        const timeSinceLast = now - (prev.combo.lastQuestTime ?? 0);
+        const inWindow = timeSinceLast <= COMBO_WINDOW_MS && prev.combo.lastQuestTime > 0;
+        const newComboCount = inWindow ? prev.combo.count + 1 : 1;
+        const comboMult = computeComboMultiplier(newComboCount);
+
+        // ── Class bonus ──────────────────────────────────────────────────
+        const classDef = getClassDef(prev.selectedClass);
+        const classMult = getClassXPMultiplier(classDef, quest.tags, quest.act);
+
+        // ── Daily bonus ──────────────────────────────────────────────────
+        const today = new Date().toISOString().split("T")[0];
+        const isDailyBonus =
+          prev.dailyBonus?.questId === questId && prev.dailyBonus?.date === today;
+        const dailyMult = isDailyBonus ? 2 : 1;
+
+        // ── Final XP ─────────────────────────────────────────────────────
+        const finalXP = Math.round(quest.xp * comboMult * classMult * dailyMult);
+
         const prevLevel = prev.level;
-        const newTotalXP = prev.totalXP + quest.xp;
+        const newTotalXP = prev.totalXP + finalXP;
         const levelInfo = getLevelInfo(newTotalXP);
         const curLevel = levelInfo.current.level;
 
-        const next: UserState = {
+        // ── SPECIAL attributes ───────────────────────────────────────────
+        const newQuestStates = {
+          ...prev.questStates,
+          [questId]: {
+            completed: true,
+            completedAt: new Date().toISOString(),
+            checkpoints: quest.checkpoints.map(() => true),
+          },
+        };
+        const newSpecial = computeSpecial(newQuestStates, QUESTS);
+
+        // ── Inventory ────────────────────────────────────────────────────
+        // Streak check for streak-flame (done after we build next state)
+        let next: UserState = {
           ...prev,
           totalXP: newTotalXP,
           level: curLevel,
           levelName: levelInfo.current.name,
-          questStates: {
-            ...prev.questStates,
-            [questId]: {
-              completed: true,
-              completedAt: new Date().toISOString(),
-              checkpoints: quest.checkpoints.map(() => true),
-            },
+          questStates: newQuestStates,
+          special: newSpecial,
+          combo: {
+            count: newComboCount,
+            lastQuestTime: now,
+            multiplier: comboMult,
           },
+          // Rotate daily bonus if the completed quest was the bonus
+          dailyBonus: isDailyBonus
+            ? computeDailyBonus({ ...prev, questStates: newQuestStates })
+            : prev.dailyBonus,
         };
+
+        // Check if 7-day streak earned
+        const streakInfo = computeStreak(next.questStates);
+        const hasStreakFlame = next.inventory.includes("streak-flame");
+        if (streakInfo.currentStreak >= 7 && !hasStreakFlame) {
+          next = { ...next, inventory: [...next.inventory, "streak-flame"] };
+        }
+
+        // Sync all earned inventory items
+        const earnedItems = computeEarnedItems(next);
+        const newInventory = Array.from(new Set([...next.inventory, ...earnedItems]));
+        next = { ...next, inventory: newInventory };
 
         if (curLevel > prevLevel) {
           setJustLeveledUp(true);
@@ -160,19 +239,31 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
       const newTotalXP = Math.max(0, prev.totalXP - quest.xp);
       const levelInfo = getLevelInfo(newTotalXP);
 
+      const newQuestStates = {
+        ...prev.questStates,
+        [questId]: {
+          completed: false,
+          checkpoints: prev.questStates[questId]?.checkpoints ?? [],
+        },
+      };
+      const newSpecial = computeSpecial(newQuestStates, QUESTS);
+
       const next: UserState = {
         ...prev,
         totalXP: newTotalXP,
         level: levelInfo.current.level,
         levelName: levelInfo.current.name,
-        questStates: {
-          ...prev.questStates,
-          [questId]: {
-            completed: false,
-            checkpoints: prev.questStates[questId]?.checkpoints ?? [],
-          },
-        },
+        questStates: newQuestStates,
+        special: newSpecial,
       };
+      saveState(next);
+      return next;
+    });
+  }, []);
+
+  const selectClass = useCallback((cls: PlayerClass) => {
+    setState((prev) => {
+      const next = { ...prev, selectedClass: cls };
       saveState(next);
       return next;
     });
@@ -184,6 +275,9 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
     saveState(fresh);
   }, []);
 
+  const comboCount = state.combo.count;
+  const comboMultiplier = state.combo.multiplier;
+
   return (
     <QuestContext.Provider
       value={{
@@ -192,11 +286,14 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
         completeQuest,
         uncompleteQuest,
         resetAll,
+        selectClass,
         newlyUnlockedAchievements,
         clearNewAchievements: () => setNewlyUnlockedAchievements([]),
         justLeveledUp,
         newLevel,
         clearLevelUp: () => setJustLeveledUp(false),
+        comboCount,
+        comboMultiplier,
       }}
     >
       {children}

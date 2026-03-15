@@ -292,3 +292,206 @@ body {
     rgba(12, 12, 18, 0.98) 100%
   );
 }
+
+/* ============================================================
+   OLED MODE (#51)
+   ============================================================ */
+.oled-mode,
+[data-theme="oled"] {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0f;
+}
+
+/* ============================================================
+   CUSTOM SCROLLBARS (#62) — enhanced
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(139,92,246,0.3);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.6); }
+* { scrollbar-width: thin; scrollbar-color: rgba(139,92,246,0.3) transparent; }
+
+/* ============================================================
+   CRT SCANLINES OVERLAY (#61)
+   ============================================================ */
+.crt-mode body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.02) 2px,
+    rgba(0,0,0,0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ============================================================
+   REDUCED MOTION (#69)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ============================================================
+   HIGH CONTRAST MODE (#70)
+   ============================================================ */
+.high-contrast {
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #b0b0b0;
+  --bg-primary: #000000;
+  --bg-secondary: #0d0d0d;
+  --accent-primary: #a855f7;
+  --card-border: rgba(255,255,255,0.2);
+}
+
+/* ============================================================
+   GLITCH HOVER EFFECT (#71)
+   ============================================================ */
+.glitch-hover:hover {
+  animation: glitch 0.3s ease;
+}
+@keyframes glitch {
+  0%, 100% { transform: translate(0); filter: none; }
+  20% { transform: translate(-1px, 1px); filter: hue-rotate(20deg); }
+  40% { transform: translate(1px, -1px); filter: hue-rotate(-20deg); }
+  60% { transform: translate(-1px, -1px); filter: brightness(1.1); }
+  80% { transform: translate(1px, 1px); filter: hue-rotate(10deg); }
+}
+
+/* ============================================================
+   ACTIVE STATE PULSE (#72)
+   ============================================================ */
+.active-pulse {
+  animation: active-pulse 2s ease-in-out infinite;
+}
+@keyframes active-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(139,92,246,0); }
+}
+
+/* ============================================================
+   XP BAR GRADIENT & SHIMMER (#84)
+   ============================================================ */
+.xp-bar-fill-gradient {
+  background: linear-gradient(90deg, #8b5cf6, #6366f1, #8b5cf6);
+  background-size: 200% 100%;
+  animation: xp-shimmer 2s linear infinite;
+}
+@keyframes xp-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* XP Bar near-full pulse (#20) */
+.xp-bar-near-full {
+  animation: xp-pulse 1s ease-in-out infinite;
+}
+@keyframes xp-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3) drop-shadow(0 0 6px rgba(139,92,246,0.8)); }
+}
+
+/* ============================================================
+   BACKGROUND BLOBS (#90)
+   ============================================================ */
+.bg-blobs::before {
+  content: '';
+  position: fixed;
+  top: 10%;
+  left: 5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-blobs::after {
+  content: '';
+  position: fixed;
+  bottom: 15%;
+  right: 8%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   ANIMATED CHECKMARKS (#91)
+   ============================================================ */
+.quest-checkbox:checked::after {
+  content: '';
+  animation: checkmark-draw 0.3s ease forwards;
+}
+@keyframes checkmark-draw {
+  0% { stroke-dashoffset: 20; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* ============================================================
+   CARD SHIMMER LOADING (#97)
+   ============================================================ */
+.shimmer-loading {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, rgba(139,92,246,0.05) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: card-shimmer 1.5s infinite;
+}
+@keyframes card-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   SHADOW DEPTH UTILITIES (#76)
+   ============================================================ */
+.shadow-glow-sm { box-shadow: 0 2px 8px rgba(139,92,246,0.15); }
+.shadow-glow-md { box-shadow: 0 4px 20px rgba(139,92,246,0.2); }
+.shadow-glow-lg { box-shadow: 0 8px 40px rgba(139,92,246,0.3); }
+.shadow-glow-xl { box-shadow: 0 16px 60px rgba(139,92,246,0.4); }
+
+/* ============================================================
+   EVERYTHING GLOWS MODE (#100)
+   ============================================================ */
+.everything-glows * {
+  text-shadow: 0 0 8px currentColor;
+}
+.everything-glows .glass {
+  box-shadow: 0 0 20px rgba(139,92,246,0.3), inset 0 0 20px rgba(139,92,246,0.05);
+}
+
+/* ============================================================
+   ULTRAWIDE 4-COLUMN GRID (#65)
+   ============================================================ */
+@media (min-width: 3000px) {
+  .quest-grid { grid-template-columns: repeat(4, 1fr) !important; }
+}
+@media (min-width: 2000px) and (max-width: 2999px) {
+  .quest-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ============================================================
+   SKELETON SHIMMER KEYFRAME (used by SkeletonCard)
+   ============================================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

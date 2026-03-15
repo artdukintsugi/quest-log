@@ -7,6 +7,8 @@ import BottomNav from "@/components/layout/BottomNav";
 import AppShell from "@/components/AppShell";
 import FloatingParticles from "@/components/ui/FloatingParticles";
 import PageTransition from "@/components/ui/PageTransition";
+import MouseGradient from "@/components/ui/MouseGradient";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -37,9 +39,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="cs" className={`${fraunces.variable} ${outfit.variable}`}>
-      <body style={{ backgroundColor: "var(--bg-primary)" }}>
+      <body className="bg-blobs" style={{ backgroundColor: "var(--bg-primary)" }}>
         <QuestProvider>
           <AppShell>
+            <MouseGradient />
             <FloatingParticles />
             {/* Ultrawide centering — max 1600px, pure black outside */}
             <div className="max-w-[1600px] mx-auto relative">
@@ -51,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </div>
             <BottomNav />
+            <ScrollToTop />
           </AppShell>
         </QuestProvider>
       </body>

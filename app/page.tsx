@@ -9,7 +9,13 @@ import { ACTS } from "@/lib/data/acts";
 import { getLevelInfo } from "@/lib/data/levels";
 import { ACHIEVEMENTS } from "@/lib/data/achievements";
 import { getQuestStatus } from "@/lib/utils";
-import { Zap, Target, CheckCircle2, Shuffle, ChevronRight, Star, Clock } from "lucide-react";
+import { Zap, Target, CheckCircle2, Shuffle, ChevronRight, Star, Clock, Flame } from "lucide-react";
+import ComboDisplay from "@/components/rpg/ComboDisplay";
+import SpecialDisplay from "@/components/rpg/SpecialDisplay";
+import ClassSelector from "@/components/rpg/ClassSelector";
+import KanyeQuote from "@/components/kanye/KanyeQuote";
+import { useStreak } from "@/hooks/useStreak";
+import { useDailyBonus } from "@/hooks/useDailyBonus";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 } as const,
@@ -19,6 +25,9 @@ const fadeUp = (delay = 0) => ({
 
 export default function Dashboard() {
   const { state } = useQuestContext();
+  const streak = useStreak(state.questStates);
+  const { bonus: dailyBonus } = useDailyBonus(state);
+  const dailyBonusQuest = dailyBonus ? QUESTS.find((q) => q.id === dailyBonus.questId) : null;
   const levelInfo = getLevelInfo(state.totalXP);
   const nextXP = levelInfo.next.xp;
   const curXP = levelInfo.current.xp;
@@ -74,8 +83,13 @@ export default function Dashboard() {
       transition={{ duration: 0.3 }}
       className="p-4 lg:p-8 max-w-5xl mx-auto"
     >
+      {/* Daily Ye wisdom */}
+      <motion.div {...fadeUp(0)} className="mb-4">
+        <KanyeQuote />
+      </motion.div>
+
       {/* Hero section */}
-      <motion.div {...fadeUp(0)} className="mb-6">
+      <motion.div {...fadeUp(0.02)} className="mb-6">
         <h1
           className="text-3xl lg:text-4xl font-bold mb-1"
           style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
@@ -163,6 +177,9 @@ export default function Dashboard() {
           </div>
 
           <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-2">
+              <ComboDisplay />
+            </div>
             <div className="flex items-baseline gap-2 mb-1">
               <span
                 className="text-3xl font-bold glow-text-gold sm:hidden"
@@ -206,11 +223,12 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-5">
         {[
           { label: "Dokončeno", value: `${completedQuests.length}/${QUESTS.length}`, icon: CheckCircle2, color: "var(--success)" },
           { label: "Dostupné", value: availableQuests.length.toString(), icon: Target, color: "var(--accent-secondary)" },
           { label: "XP/den", value: xpPerDay, icon: Zap, color: "var(--xp-gold)" },
+          { label: "Streak", value: `${streak.currentStreak}d`, icon: Flame, color: streak.currentStreak > 0 ? "#f97316" : "var(--text-muted)" },
           { label: "Achievementy", value: `${state.achievements.length}/${ACHIEVEMENTS.length}`, icon: Star, color: "#f472b6" },
         ].map(({ label, value, icon: Icon, color }, i) => (
           <motion.div
@@ -321,6 +339,36 @@ export default function Dashboard() {
             Quick Actions
           </h2>
           <div className="flex flex-col gap-2.5">
+            {/* Daily bonus quest */}
+            {dailyBonusQuest && (
+              <Link href={`/quests/${dailyBonusQuest.id}`}>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="flex items-center justify-between p-3.5 rounded-xl group"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(251,191,36,0.08), rgba(251,191,36,0.02))",
+                    border: "1px solid rgba(251,191,36,0.25)",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(251,191,36,0.15)" }}>
+                      <Star size={16} style={{ color: "var(--xp-gold)" }} />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider block" style={{ color: "var(--xp-gold)" }}>
+                        ⚡ Daily Quest · 2× XP
+                      </span>
+                      <span className="font-medium text-sm truncate block max-w-[160px]" style={{ color: "var(--text-primary)" }}>
+                        {dailyBonusQuest.title}
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={15} className="group-hover:translate-x-1 transition-transform" style={{ color: "var(--text-muted)" }} />
+                </motion.div>
+              </Link>
+            )}
+
             <motion.button
               onClick={randomQuest}
               whileHover={{ scale: 1.02 }}
@@ -367,6 +415,8 @@ export default function Dashboard() {
                 <ChevronRight size={15} className="group-hover:translate-x-1 transition-transform" style={{ color: "var(--text-muted)" }} />
               </motion.div>
             </Link>
+
+            <ClassSelector />
           </div>
 
           {unlockedAchievements.length > 0 && (
@@ -393,6 +443,11 @@ export default function Dashboard() {
           )}
         </motion.div>
       </div>
+
+      {/* S.P.E.C.I.A.L. */}
+      <motion.div {...fadeUp(0.5)} className="mt-5">
+        <SpecialDisplay />
+      </motion.div>
     </motion.div>
   );
 }

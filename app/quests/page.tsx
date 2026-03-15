@@ -4,9 +4,11 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { QUESTS } from "@/lib/data/quests";
 import { ACTS } from "@/lib/data/acts";
+import { SKILL_DOMAINS, SKILL_CATEGORIES } from "@/lib/data/skills";
 import { getQuestStatus } from "@/lib/utils";
 import { useQuestContext } from "@/context/QuestContext";
 import QuestCard from "@/components/quest/QuestCard";
+import EmptyState from "@/components/ui/EmptyState";
 import { Search, Filter } from "lucide-react";
 
 type StatusFilter = "all" | "available" | "completed" | "locked";
@@ -18,6 +20,7 @@ export default function QuestsPage() {
   const [actFilter, setActFilter] = useState(0);
   const [diffFilter, setDiffFilter] = useState(0);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [skillFilter, setSkillFilter] = useState("");
   const [sortBy, setSortBy] = useState<SortBy>("id");
   const [compact, setCompact] = useState(false);
 
@@ -30,7 +33,8 @@ export default function QuestsPage() {
         (quest) =>
           quest.title.toLowerCase().includes(q) ||
           quest.description.toLowerCase().includes(q) ||
-          quest.tags.some((t) => t.toLowerCase().includes(q))
+          quest.tags.some((t) => t.toLowerCase().includes(q)) ||
+          quest.skills?.some((s) => s.toLowerCase().includes(q))
       );
     }
 
@@ -40,6 +44,10 @@ export default function QuestsPage() {
 
     if (diffFilter > 0) {
       quests = quests.filter((q) => q.difficulty === diffFilter);
+    }
+
+    if (skillFilter) {
+      quests = quests.filter((q) => q.skills?.includes(skillFilter));
     }
 
     if (statusFilter !== "all") {
@@ -151,6 +159,29 @@ export default function QuestsPage() {
             ))}
           </select>
 
+          {/* Skill filter */}
+          <select
+            value={skillFilter}
+            onChange={(e) => setSkillFilter(e.target.value)}
+            className="text-xs px-2 py-1.5 rounded-lg outline-none"
+            style={{
+              backgroundColor: skillFilter ? "rgba(139,92,246,0.15)" : "var(--bg-primary)",
+              color: skillFilter ? "var(--accent-secondary)" : "var(--text-secondary)",
+              border: skillFilter ? "1px solid rgba(139,92,246,0.4)" : "1px solid rgba(139,92,246,0.2)",
+            }}
+          >
+            <option value="">Všechny skill oblasti</option>
+            {SKILL_CATEGORIES.map((cat) => (
+              <optgroup key={cat} label={cat}>
+                {SKILL_DOMAINS.filter((s) => s.category === cat).map((skill) => (
+                  <option key={skill.id} value={skill.id}>
+                    {skill.emoji} {skill.name}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+
           {/* Status filter */}
           {(["all", "available", "completed", "locked"] as StatusFilter[]).map(
             (s) => (
@@ -233,12 +264,7 @@ export default function QuestsPage() {
           <QuestCard key={quest.id} quest={quest} compact={compact} index={i} />
         ))}
         {filtered.length === 0 && (
-          <div
-            className="text-center py-16"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Žádné questy nenalezeny.
-          </div>
+          <EmptyState type={search.trim() ? "no-results" : statusFilter === "locked" ? "locked" : "no-quests"} />
         )}
       </div>
     </motion.div>

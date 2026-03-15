@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  LayoutDashboard, Scroll, GitBranch, Trophy, BarChart2, Download, Upload, RotateCcw
+  LayoutDashboard, Scroll, GitBranch, Trophy, BarChart2, Download, Upload, RotateCcw, Music2, Settings
 } from "lucide-react";
 import { useQuestContext } from "@/context/QuestContext";
 import { getLevelInfo } from "@/lib/data/levels";
@@ -19,6 +19,8 @@ const navItems = [
   { href: "/tree", label: "Dep. Tree", icon: GitBranch },
   { href: "/achievements", label: "Achievementy", icon: Trophy },
   { href: "/stats", label: "Statistiky", icon: BarChart2 },
+  { href: "/vibes", label: "Vibes 🎵", icon: Music2 },
+  { href: "/settings", label: "Nastavení", icon: Settings },
 ];
 
 export default function Sidebar() {
