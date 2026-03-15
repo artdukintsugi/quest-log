@@ -11,14 +11,47 @@ import { QUESTS } from "@/lib/data/quests";
 import { ACTS } from "@/lib/data/acts";
 import { getLevelInfo } from "@/lib/data/levels";
 import { ACHIEVEMENTS } from "@/lib/data/achievements";
+import { BarChart2, TrendingUp, Calendar } from "lucide-react";
 
 const DIFF_COLORS = ["#22c55e", "#a78bfa", "#fbbf24", "#f97316", "#ef4444"];
 
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
+  initial: { opacity: 0, y: 16 } as const,
+  animate: { opacity: 1, y: 0 } as const,
   transition: { duration: 0.35, delay, ease: "easeOut" as const },
 });
+
+// Generate heatmap data for last 90 days
+function generateHeatmapData(questStates: Record<number, { completed: boolean; completedAt?: string }>) {
+  const days: { date: string; count: number; day: number; week: number }[] = [];
+  const now = new Date();
+  const startDate = new Date(now);
+  startDate.setDate(startDate.getDate() - 89);
+
+  // Count completions per day
+  const dayCounts: Record<string, number> = {};
+  Object.values(questStates).forEach((qs) => {
+    if (qs.completed && qs.completedAt) {
+      const d = qs.completedAt.split("T")[0];
+      dayCounts[d] = (dayCounts[d] || 0) + 1;
+    }
+  });
+
+  for (let i = 0; i < 90; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    const dateStr = d.toISOString().split("T")[0];
+    const dayOfWeek = d.getDay();
+    const week = Math.floor(i / 7);
+    days.push({
+      date: dateStr,
+      count: dayCounts[dateStr] || 0,
+      day: dayOfWeek,
+      week,
+    });
+  }
+  return days;
+}
 
 export default function StatsPage() {
   const { state } = useQuestContext();
@@ -39,7 +72,7 @@ export default function StatsPage() {
       ACTS.map((act) => {
         const actQuests = QUESTS.filter((q) => q.act === act.id);
         const done = actQuests.filter((q) => completedIds.has(q.id)).length;
-        return { name: act.emoji + " " + act.name.split(" ")[0], total: actQuests.length, done };
+        return { name: act.emoji, total: actQuests.length, done };
       }),
     [completedIds]
   );
@@ -56,6 +89,8 @@ export default function StatsPage() {
     }));
   }, [completedIds]);
 
+  const heatmapData = useMemo(() => generateHeatmapData(state.questStates), [state.questStates]);
+
   const totalPossibleXP = QUESTS.reduce((s, q) => s + q.xp, 0);
   const nextXP = levelInfo.next.xp;
   const pct =
@@ -67,7 +102,24 @@ export default function StatsPage() {
       : 100;
 
   const startDate = state.startDate ? new Date(state.startDate) : new Date();
-  const daysSince = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  const daysSince = Math.max(1, Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+
+  // Streak calculation
+  const currentStreak = useMemo(() => {
+    let streak = 0;
+    const now = new Date();
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const hasCompletion = Object.values(state.questStates).some(
+        (qs) => qs.completed && qs.completedAt?.startsWith(dateStr)
+      );
+      if (hasCompletion) streak++;
+      else if (i > 0) break; // skip today if no completion yet
+    }
+    return streak;
+  }, [state.questStates]);
 
   return (
     <motion.div
@@ -76,51 +128,122 @@ export default function StatsPage() {
       transition={{ duration: 0.3 }}
       className="p-4 lg:p-8 max-w-5xl mx-auto"
     >
-      <motion.div {...fadeUp(0)} className="mb-6">
-        <h1
-          className="text-3xl font-bold mb-1"
-          style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
-        >
-          Statistiky
-        </h1>
-        <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-          Tvůj progress v číslech
-        </p>
+      <motion.div {...fadeUp(0)} className="mb-6 flex items-center gap-3">
+        <BarChart2 size={28} style={{ color: "var(--accent-secondary)", filter: "drop-shadow(0 0 8px rgba(139,92,246,0.4))" }} />
+        <div>
+          <h1
+            className="text-3xl font-bold"
+            style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
+          >
+            Statistiky
+          </h1>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+            Tvůj progress v číslech
+          </p>
+        </div>
       </motion.div>
 
       {/* Overview cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
         {[
-          { label: "Celkem XP", value: state.totalXP.toLocaleString(), sub: `/ ${totalPossibleXP.toLocaleString()} max` },
+          { label: "Celkem XP", value: state.totalXP.toLocaleString(), sub: `/ ${totalPossibleXP.toLocaleString()}` },
           { label: "Level", value: state.level, sub: state.levelName },
-          { label: "Dokončeno", value: completedIds.size, sub: `/ ${QUESTS.length} questů` },
-          { label: "Achievementy", value: state.achievements.length, sub: `/ ${ACHIEVEMENTS.length}` },
+          { label: "Dokončeno", value: completedIds.size, sub: `/ ${QUESTS.length}` },
+          { label: "Streak", value: `${currentStreak}d`, sub: currentStreak > 0 ? "🔥" : "—" },
+          { label: "XP/den", value: (state.totalXP / daysSince).toFixed(1), sub: `${daysSince} dní` },
         ].map(({ label, value, sub }, i) => (
           <motion.div
             key={label}
             {...fadeUp(0.05 + i * 0.05)}
-            className="rounded-xl p-4 border glass"
-            style={{ borderColor: "rgba(139,92,246,0.15)" }}
+            className="rounded-xl p-4 border glass card-lift"
+            style={{ borderColor: "rgba(139,92,246,0.1)" }}
           >
-            <p className="text-xs mb-1" style={{ color: "var(--text-muted)" }}>{label}</p>
-            <p className="text-2xl font-bold" style={{ color: "var(--xp-gold)", fontFamily: "monospace" }}>
+            <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "var(--text-muted)" }}>{label}</p>
+            <p className="text-xl font-bold" style={{ color: "var(--xp-gold)", fontFamily: "monospace" }}>
               {value}
             </p>
-            <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{sub}</p>
+            <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>{sub}</p>
           </motion.div>
         ))}
       </div>
 
-      {/* Level progress */}
+      {/* Activity Heatmap */}
       <motion.div
         {...fadeUp(0.25)}
         className="rounded-2xl p-5 mb-5 border glass"
-        style={{ borderColor: "rgba(139,92,246,0.15)" }}
+        style={{ borderColor: "rgba(139,92,246,0.1)" }}
       >
         <h2
-          className="text-lg font-semibold mb-3"
+          className="text-base font-semibold mb-4 flex items-center gap-2"
           style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
         >
+          <Calendar size={16} style={{ color: "var(--accent-secondary)" }} />
+          Aktivita (posledních 90 dní)
+        </h2>
+        <div className="overflow-x-auto">
+          <div className="flex gap-[3px]" style={{ minWidth: "fit-content" }}>
+            {Array.from({ length: Math.ceil(heatmapData.length / 7) }, (_, week) => (
+              <div key={week} className="flex flex-col gap-[3px]">
+                {Array.from({ length: 7 }, (_, day) => {
+                  const idx = week * 7 + day;
+                  const cell = heatmapData[idx];
+                  if (!cell) return <div key={day} className="w-3 h-3" />;
+                  const intensity = cell.count === 0 ? 0 : Math.min(cell.count, 4);
+                  const colors = [
+                    "rgba(139,92,246,0.06)",
+                    "rgba(139,92,246,0.25)",
+                    "rgba(139,92,246,0.45)",
+                    "rgba(139,92,246,0.65)",
+                    "rgba(139,92,246,0.85)",
+                  ];
+                  return (
+                    <div
+                      key={day}
+                      className="w-3 h-3 heatmap-cell"
+                      title={`${cell.date}: ${cell.count} quest${cell.count !== 1 ? "ů" : ""}`}
+                      style={{
+                        backgroundColor: colors[intensity],
+                        boxShadow: intensity > 2 ? `0 0 4px rgba(139,92,246,${intensity * 0.15})` : "none",
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 mt-2 text-[10px]" style={{ color: "var(--text-muted)" }}>
+            <span>Méně</span>
+            {[0, 1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="w-3 h-3 rounded-sm"
+                style={{
+                  backgroundColor: [
+                    "rgba(139,92,246,0.06)",
+                    "rgba(139,92,246,0.25)",
+                    "rgba(139,92,246,0.45)",
+                    "rgba(139,92,246,0.65)",
+                    "rgba(139,92,246,0.85)",
+                  ][i],
+                }}
+              />
+            ))}
+            <span>Více</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Level progress */}
+      <motion.div
+        {...fadeUp(0.3)}
+        className="rounded-2xl p-5 mb-5 border glass"
+        style={{ borderColor: "rgba(139,92,246,0.1)" }}
+      >
+        <h2
+          className="text-base font-semibold mb-3 flex items-center gap-2"
+          style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
+        >
+          <TrendingUp size={16} style={{ color: "var(--xp-gold)" }} />
           Level Progress
         </h2>
         <div className="flex justify-between text-sm mb-2">
@@ -136,10 +259,10 @@ export default function StatsPage() {
             className="h-3 rounded-full xp-bar-fill"
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
-            transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+            transition={{ duration: 1.2, ease: "easeOut" as const, delay: 0.3 }}
           />
         </div>
-        <p className="text-xs mt-1.5 text-right" style={{ color: "var(--text-muted)" }}>
+        <p className="text-xs mt-1.5 text-right tabular-nums" style={{ color: "var(--text-muted)" }}>
           {state.totalXP} / {nextXP} XP ({pct.toFixed(0)}%)
         </p>
       </motion.div>
@@ -147,12 +270,12 @@ export default function StatsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Quests per act */}
         <motion.div
-          {...fadeUp(0.3)}
+          {...fadeUp(0.35)}
           className="rounded-2xl p-5 border glass"
-          style={{ borderColor: "rgba(139,92,246,0.15)" }}
+          style={{ borderColor: "rgba(139,92,246,0.1)" }}
         >
           <h2
-            className="text-lg font-semibold mb-4"
+            className="text-base font-semibold mb-4"
             style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
           >
             Questy per Akt
@@ -161,7 +284,7 @@ export default function StatsPage() {
             <BarChart data={actData} margin={{ left: -20 }}>
               <XAxis
                 dataKey="name"
-                tick={{ fill: "var(--text-muted)", fontSize: 10 }}
+                tick={{ fill: "var(--text-muted)", fontSize: 11 }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -176,22 +299,23 @@ export default function StatsPage() {
                   border: "1px solid rgba(139,92,246,0.3)",
                   borderRadius: "8px",
                   color: "var(--text-primary)",
+                  fontSize: "12px",
                 }}
               />
               <Bar dataKey="done" name="Splněno" fill="var(--accent-primary)" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="total" name="Celkem" fill="rgba(139,92,246,0.2)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="total" name="Celkem" fill="rgba(139,92,246,0.15)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
 
         {/* Difficulty distribution */}
         <motion.div
-          {...fadeUp(0.35)}
+          {...fadeUp(0.4)}
           className="rounded-2xl p-5 border glass"
-          style={{ borderColor: "rgba(139,92,246,0.15)" }}
+          style={{ borderColor: "rgba(139,92,246,0.1)" }}
         >
           <h2
-            className="text-lg font-semibold mb-4"
+            className="text-base font-semibold mb-4"
             style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
           >
             Dokončené dle Obtížnosti
@@ -219,6 +343,7 @@ export default function StatsPage() {
                       backgroundColor: "var(--bg-tertiary)",
                       border: "1px solid rgba(139,92,246,0.3)",
                       borderRadius: "8px",
+                      fontSize: "12px",
                     }}
                   />
                 </PieChart>
@@ -244,9 +369,9 @@ export default function StatsPage() {
 
       {/* Footer stat */}
       <motion.div
-        {...fadeUp(0.4)}
+        {...fadeUp(0.45)}
         className="rounded-2xl p-5 mt-5 border glass"
-        style={{ borderColor: "rgba(139,92,246,0.15)" }}
+        style={{ borderColor: "rgba(139,92,246,0.1)" }}
       >
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
           Používáš Quest Log{" "}
@@ -255,8 +380,8 @@ export default function StatsPage() {
           </span>{" "}
           dní.{" "}
           {state.totalXP > 0 && completedIds.size > 0
-            ? `Průměr: ${(state.totalXP / Math.max(daysSince, 1)).toFixed(1)} XP/den.`
-            : ""}
+            ? `Při tvém tempu budeš GOAT za ~${Math.ceil((6000 - state.totalXP) / Math.max(state.totalXP / daysSince, 0.1))} dní.`
+            : "Začni plnit questy!"}
         </p>
       </motion.div>
     </motion.div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Scroll,
@@ -22,27 +23,32 @@ export default function BottomNav() {
   const pathname = usePathname();
   return (
     <nav
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t"
-      style={{
-        backgroundColor: "var(--bg-secondary)",
-        borderColor: "rgba(139,92,246,0.2)",
-      }}
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bottom-nav-glass"
+      role="navigation"
+      aria-label="Mobile navigation"
     >
       <div className="flex">
         {navItems.map(({ href, icon: Icon, label }) => {
-          const active = pathname === href;
+          const active = pathname === href || (href !== "/" && pathname.startsWith(href));
           return (
             <Link
               key={href}
               href={href}
-              className="flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 text-xs transition-colors"
-              style={
-                active
-                  ? { color: "var(--accent-secondary)" }
-                  : { color: "var(--text-muted)" }
-              }
+              className="flex-1 flex flex-col items-center justify-center py-3 gap-1 text-[10px] font-medium relative"
+              style={{ color: active ? "var(--accent-secondary)" : "var(--text-muted)" }}
             >
-              <Icon size={20} />
+              {active && (
+                <motion.div
+                  layoutId="bottomNavIndicator"
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full"
+                  style={{
+                    background: "linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))",
+                    boxShadow: "0 0 12px var(--accent-glow)",
+                  }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <Icon size={20} style={active ? { filter: "drop-shadow(0 0 6px rgba(139,92,246,0.5))" } : {}} />
               <span>{label}</span>
             </Link>
           );

@@ -5,6 +5,7 @@ import { QuestProvider } from "@/context/QuestContext";
 import Sidebar from "@/components/layout/Sidebar";
 import BottomNav from "@/components/layout/BottomNav";
 import AppShell from "@/components/AppShell";
+import FloatingParticles from "@/components/ui/FloatingParticles";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -20,7 +21,7 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Quest Log — Evelyn",
-  description: "200 questy. XP systém. Gamifikovaný život.",
+  description: "210 questů. XP systém. Gamifikovaný život.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -29,7 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={{ backgroundColor: "var(--bg-primary)" }}>
         <QuestProvider>
           <AppShell>
-            <div className="flex min-h-screen">
+            <FloatingParticles />
+            <div className="flex min-h-screen relative z-10">
               <Sidebar />
               <main className="flex-1 pb-20 lg:pb-0 overflow-x-hidden">
                 {children}
