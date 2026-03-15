@@ -261,7 +261,7 @@ export default function QuestsPage() {
       {/* Quest list */}
       <div className="flex flex-col gap-2">
         {filtered.map((quest, i) => (
-          <QuestCard key={quest.id} quest={quest} compact={compact} index={i} />
+          <QuestCard key={quest.id} quest={quest} compact={compact} index={i} highlight={search.trim()} />
         ))}
         {filtered.length === 0 && (
           <EmptyState type={search.trim() ? "no-results" : statusFilter === "locked" ? "locked" : "no-quests"} />

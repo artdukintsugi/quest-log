@@ -8,6 +8,8 @@ import { ACHIEVEMENTS } from "@/lib/data/achievements";
 import { soundLevelUp, soundAchievement, soundComplete } from "@/lib/sounds";
 import { fireAchievement } from "@/lib/confetti";
 import CommandPalette from "@/components/ui/CommandPalette";
+import KanyeEasterEgg from "@/components/ui/KanyeEasterEgg";
+import { useAutoComplete } from "@/hooks/useAutoComplete";
 
 // Apply accent color + dark mode from localStorage on every mount
 function useGlobalTheme() {
@@ -26,6 +28,7 @@ function useGlobalTheme() {
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   useGlobalTheme();
+  useAutoComplete();
   const { justLeveledUp, newLevel, clearLevelUp, newlyUnlockedAchievements, clearNewAchievements } = useQuestContext();
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
@@ -67,6 +70,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <CommandPalette />
+      <KanyeEasterEgg />
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
       <LevelUpOverlay
         show={justLeveledUp}

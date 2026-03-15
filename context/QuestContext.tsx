@@ -219,6 +219,10 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
           setTimeout(kanyeSayLevelUp, 800);
         } else {
           setTimeout(kanyeSayQuestComplete, 400);
+          // Fire typed confetti after a short delay (allows sound to trigger first)
+          import("@/lib/confetti").then(({ fireQuestComplete }) =>
+            fireQuestComplete(quest.tags, quest.xp, quest.act)
+          );
         }
 
         const unlocked = checkAchievements(next);

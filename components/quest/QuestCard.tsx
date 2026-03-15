@@ -11,14 +11,16 @@ import AskAIModal from "./AskAIModal";
 import { SkillList } from "@/components/ui/SkillBadge";
 import ContextMenu from "@/components/ui/ContextMenu";
 import { Lock, CheckCircle2, ChevronRight } from "lucide-react";
+import Highlight from "@/components/ui/Highlight";
 
 interface Props {
   quest: Quest;
   compact?: boolean;
   index?: number;
+  highlight?: string;
 }
 
-export default function QuestCard({ quest, compact = false, index = 0 }: Props) {
+export default function QuestCard({ quest, compact = false, index = 0, highlight = "" }: Props) {
   const { state, completeQuest } = useQuestContext();
   const status = getQuestStatus(quest.id, state.questStates, quest.prerequisites);
   const progress = getCheckpointProgress(quest, state.questStates);
@@ -110,7 +112,7 @@ export default function QuestCard({ quest, compact = false, index = 0 }: Props) 
                   fontFamily: "var(--font-outfit)",
                 }}
               >
-                {quest.title}
+                <Highlight text={quest.title} query={highlight} />
               </span>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">

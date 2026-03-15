@@ -52,7 +52,7 @@ export default function QuestDetailPage() {
   const dependents = QUESTS.filter((q) => q.prerequisites.includes(quest.id));
 
   const handleComplete = () => {
-    fireQuestComplete();
+    fireQuestComplete(quest.tags, quest.xp, quest.act);
     soundComplete();
     setXpFloat(true);
     setTimeout(() => setXpFloat(false), 1600);

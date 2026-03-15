@@ -16,6 +16,7 @@ import ClassSelector from "@/components/rpg/ClassSelector";
 import KanyeQuote from "@/components/kanye/KanyeQuote";
 import { useStreak } from "@/hooks/useStreak";
 import { useDailyBonus } from "@/hooks/useDailyBonus";
+import M5Countdown from "@/components/ui/M5Countdown";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 } as const,
@@ -443,6 +444,11 @@ export default function Dashboard() {
           )}
         </motion.div>
       </div>
+
+      {/* M5 Countdown */}
+      <motion.div {...fadeUp(0.48)} className="mt-5">
+        <M5Countdown />
+      </motion.div>
 
       {/* S.P.E.C.I.A.L. */}
       <motion.div {...fadeUp(0.5)} className="mt-5">
