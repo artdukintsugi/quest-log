@@ -283,16 +283,6 @@ body {
   }
 }
 
-/* === EQUALIZER BARS === */
-@keyframes eq-bounce {
-  0%, 100% { height: 3px; }
-  50%       { height: 14px; }
-}
-.equalizer-bar {
-  display: inline-block;
-  height: 3px;
-  animation: eq-bounce linear infinite;
-}
 
 /* === SIDEBAR GRADIENT === */
 .sidebar-gradient {
