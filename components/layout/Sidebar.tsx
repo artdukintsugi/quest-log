@@ -13,6 +13,8 @@ import { exportState, importState } from "@/lib/storage";
 import MuteButton from "@/components/ui/MuteButton";
 import VibeEqualizer from "@/components/ui/VibeEqualizer";
 import { useRef } from "react";
+import SyncIndicator from "@/components/ui/SyncIndicator";
+import { useSyncStatus } from "@/context/SyncContext";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -28,6 +30,7 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const { state, resetAll } = useQuestContext();
+  const syncStatus = useSyncStatus();
   const fileRef = useRef<HTMLInputElement>(null);
   const levelInfo = getLevelInfo(state.totalXP);
   const next = levelInfo.next;
@@ -228,6 +231,9 @@ export default function Sidebar() {
               />
             </div>
           </div>
+
+          {/* Cloud sync status */}
+          <SyncIndicator status={syncStatus} />
 
           {/* Now playing vibe */}
           <VibeEqualizer />

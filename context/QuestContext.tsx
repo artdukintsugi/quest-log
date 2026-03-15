@@ -28,6 +28,8 @@ const COMBO_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 interface QuestContextType {
   state: UserState;
+  /** Increments every time state is saved — use for live sync debounce */
+  stateVersion: number;
   completeCheckpoint: (questId: number, checkpointIndex: number, value: boolean) => void;
   completeQuest: (questId: number) => void;
   uncompleteQuest: (questId: number) => void;
@@ -62,6 +64,7 @@ function syncDailyBonus(s: UserState): UserState {
 
 export function QuestProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<UserState>(getDefaultState);
+  const [stateVersion, setStateVersion] = useState(0);
   const [newlyUnlockedAchievements, setNewlyUnlockedAchievements] = useState<string[]>([]);
   const [justLeveledUp, setJustLeveledUp] = useState(false);
   const [newLevel, setNewLevel] = useState(1);
@@ -233,6 +236,7 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
         }
 
         saveState(next);
+        setStateVersion((v) => v + 1);
         return next;
       });
     },
@@ -291,6 +295,7 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
     <QuestContext.Provider
       value={{
         state,
+        stateVersion,
         completeCheckpoint,
         completeQuest,
         uncompleteQuest,

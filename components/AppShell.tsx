@@ -5,11 +5,14 @@ import { useQuestContext } from "@/context/QuestContext";
 import ToastContainer, { ToastData } from "@/components/ui/Toast";
 import LevelUpOverlay from "@/components/ui/LevelUpOverlay";
 import { ACHIEVEMENTS } from "@/lib/data/achievements";
-import { soundLevelUp, soundAchievement, soundComplete } from "@/lib/sounds";
+import { soundLevelUp, soundAchievement } from "@/lib/sounds";
 import { fireAchievement } from "@/lib/confetti";
 import CommandPalette from "@/components/ui/CommandPalette";
 import KanyeEasterEgg from "@/components/ui/KanyeEasterEgg";
 import { useAutoComplete } from "@/hooks/useAutoComplete";
+import { useLiveSync } from "@/hooks/useLiveSync";
+import SyncIndicator from "@/components/ui/SyncIndicator";
+import { SyncContext } from "@/context/SyncContext";
 
 // Apply accent color + dark mode from localStorage on every mount
 function useGlobalTheme() {
@@ -29,7 +32,8 @@ function useGlobalTheme() {
 export default function AppShell({ children }: { children: React.ReactNode }) {
   useGlobalTheme();
   useAutoComplete();
-  const { justLeveledUp, newLevel, clearLevelUp, newlyUnlockedAchievements, clearNewAchievements } = useQuestContext();
+  const { justLeveledUp, newLevel, clearLevelUp, newlyUnlockedAchievements, clearNewAchievements, stateVersion } = useQuestContext();
+  const { status: syncStatus } = useLiveSync(stateVersion);
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
   const addToast = useCallback((t: Omit<ToastData, "id">) => {
@@ -67,7 +71,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [newlyUnlockedAchievements, addToast, clearNewAchievements]);
 
   return (
-    <>
+    <SyncContext.Provider value={syncStatus}>
       {children}
       <CommandPalette />
       <KanyeEasterEgg />
@@ -77,6 +81,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         level={newLevel}
         onClose={clearLevelUp}
       />
-    </>
+      {/* Floating sync indicator — bottom-right corner on mobile (sidebar handles desktop) */}
+      <div className="lg:hidden fixed bottom-20 right-3 z-40">
+        <SyncIndicator status={syncStatus} />
+      </div>
+    </SyncContext.Provider>
   );
 }

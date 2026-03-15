@@ -83,6 +83,31 @@ export async function pullFromGist(): Promise<void> {
   saveGistConfig({ ...config, lastSync: new Date().toISOString() });
 }
 
+/**
+ * Pull from Gist, but only apply + return true if the content is actually
+ * different from what's already in localStorage. Safe to call on focus.
+ */
+export async function pullFromGistIfChanged(): Promise<boolean> {
+  const config = getGistConfig();
+  if (!config?.token || !config.gistId) return false;
+
+  const data = await apiRequest("GET", `https://api.github.com/gists/${config.gistId}`, config.token);
+  const content = data.files?.[GIST_FILENAME]?.content;
+  if (!content) return false;
+
+  const current = localStorage.getItem(QUEST_STORAGE_KEY);
+  if (content === current) {
+    // No change — still update lastSync timestamp
+    saveGistConfig({ ...config, lastSync: new Date().toISOString() });
+    return false;
+  }
+
+  JSON.parse(content); // validate
+  localStorage.setItem(QUEST_STORAGE_KEY, content);
+  saveGistConfig({ ...config, lastSync: new Date().toISOString() });
+  return true;
+}
+
 /** Validate a token by fetching /user */
 export async function validateToken(token: string): Promise<string> {
   const data = await apiRequest("GET", "https://api.github.com/user", token);
