@@ -14,6 +14,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "framer-motion": "^12.0.0",
+    "fuse.js": "^7.1.0",
     "lucide-react": "^0.475.0",
     "next": "16.1.6",
     "react": "^19.0.0",
@@ -22,7 +23,11 @@
     "tailwind-merge": "^3.0.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@sentry/cli", "sharp", "unrs-resolver"]
+    "onlyBuiltDependencies": [
+      "@sentry/cli",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

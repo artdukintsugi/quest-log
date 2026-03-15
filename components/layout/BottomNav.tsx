@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Scroll,
-  GitBranch,
+  Zap,
   Trophy,
   BarChart2,
 } from "lucide-react";
@@ -14,7 +14,7 @@ import {
 const navItems = [
   { href: "/", icon: LayoutDashboard, label: "Home" },
   { href: "/quests", icon: Scroll, label: "Questy" },
-  { href: "/tree", icon: GitBranch, label: "Tree" },
+  { href: "/skills", icon: Zap, label: "Skills" },
   { href: "/achievements", icon: Trophy, label: "Ach." },
   { href: "/stats", icon: BarChart2, label: "Stats" },
 ];
