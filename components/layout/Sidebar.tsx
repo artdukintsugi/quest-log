@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  LayoutDashboard, Scroll, GitBranch, Trophy, BarChart2, Download, Upload, RotateCcw, Music2, Settings, Zap, Smartphone
+  LayoutDashboard, Scroll, GitBranch, Trophy, BarChart2, Download, Upload, RotateCcw, Music2, Settings, Zap, Smartphone, Terminal
 } from "lucide-react";
 import { useQuestContext } from "@/context/QuestContext";
 import { getLevelInfo } from "@/lib/data/levels";
@@ -27,6 +27,7 @@ const navItems = [
   { href: "/skills", label: "Skills", icon: Zap },
   { href: "/stats", label: "Statistiky", icon: BarChart2 },
   { href: "/vibes", label: "Vibes 🎵", icon: Music2 },
+  { href: "/godmode", label: "⚡ God Mode", icon: Terminal },
   { href: "/settings", label: "Nastavení", icon: Settings },
 ];
 
