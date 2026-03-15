@@ -1,24 +1,23 @@
 "use client";
 
-// Web Speech API — Ye speaks directly into your soul (and your ears)
-// Pitch: 0.85 (deeper), Rate: 0.88 (slower, deliberate), Volume: 0.9
+// Kanye speaks — as a floating speech bubble because TTS is cooked
 
 const VOICE_LINES: Record<string, string[]> = {
   questComplete: [
-    "Yo, I finished that. I finished that. Nobody thought I could finish that.",
-    "That quest right there? That was my best work. That was beautiful.",
+    "Yo, I finished that. Nobody thought I could finish that.",
+    "That was my best work. That was beautiful.",
     "I'm a creative genius. I just proved it again.",
     "This is a God-level completion. You're welcome.",
     "Everybody said don't do it. I did it. Now what.",
-    "That took real vision. Not everyone has that.",
     "Quest complete. I feel like Pablo right now.",
     "I'm living my best life. One quest at a time.",
+    "That took real vision. Not everyone has that.",
   ],
   levelUp: [
     "I'm the greatest. I've always been the greatest. Now the numbers agree.",
     "New level. I needed that. The world needed that.",
     "Level up. That's not ego, that's just... facts.",
-    "I am not afraid of the new level. I am the new level.",
+    "I am not afraid of the new level. I AM the new level.",
     "This is what happens when you believe in yourself like I believe in myself.",
   ],
   achievement: [
@@ -27,108 +26,73 @@ const VOICE_LINES: Record<string, string[]> = {
     "I deserve every achievement. I've been saying that for years.",
     "They told me I couldn't get this achievement. Classic.",
   ],
-  greeting: [
-    "Good morning. I'm Kanye West. Welcome to your quest log.",
-    "Yo. You ready to be great today? Because I am.",
-    "This is the greatest quest log ever made. I helped make it.",
-  ],
-  checkpointDone: [
-    "Checkpoint. Keep going. Don't stop.",
-    "That's progress. Real progress.",
-    "One step closer to the vision.",
-  ],
-  random: [
-    "I'm the nucleus.",
-    "Has anyone told you lately that you're amazing?",
-    "Believe in your flyness. Conquer your shyness.",
-    "My greatest pain in life is that I will never be able to see myself perform live.",
-    "I still think I am the greatest.",
-    "Name one genius that ain't crazy.",
-    "Everything I'm not made me everything I am.",
-    "I refuse to accept other people's ideas of happiness for me.",
+  hanh: [
+    "Hanh?",
+    "...Hanh??",
+    "HANH.",
   ],
 };
-
-let speaking = false;
-
-function getVoice(): SpeechSynthesisVoice | null {
-  const voices = window.speechSynthesis.getVoices();
-  // Prefer a deeper US English male voice
-  return (
-    voices.find((v) => v.lang === "en-US" && v.name.toLowerCase().includes("male")) ||
-    voices.find((v) => v.lang === "en-US") ||
-    voices[0] ||
-    null
-  );
-}
-
-function speak(text: string): void {
-  if (typeof window === "undefined") return;
-  if (!("speechSynthesis" in window)) return;
-
-  // Check mute setting
-  try {
-    const settings = JSON.parse(localStorage.getItem("evelyn-settings") || "{}");
-    if (settings.soundsEnabled === false) return;
-    // Kanye voice has its own toggle
-    if (settings.kanyeVoiceEnabled === false) return;
-  } catch { /* ignore */ }
-
-  if (speaking) {
-    window.speechSynthesis.cancel();
-  }
-
-  speaking = true;
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.pitch = 0.82;   // slightly deeper
-  utter.rate = 0.85;    // slower, deliberate
-  utter.volume = 0.85;
-
-  // Wait for voices to load if needed
-  const trySpeak = () => {
-    const voice = getVoice();
-    if (voice) utter.voice = voice;
-    utter.onend = () => { speaking = false; };
-    utter.onerror = () => { speaking = false; };
-    window.speechSynthesis.speak(utter);
-  };
-
-  if (window.speechSynthesis.getVoices().length === 0) {
-    window.speechSynthesis.onvoiceschanged = () => { trySpeak(); };
-  } else {
-    trySpeak();
-  }
-}
 
 function pick(arr: string[]): string {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function kanyeSayQuestComplete() {
-  speak(pick(VOICE_LINES.questComplete));
+function showBubble(text: string) {
+  if (typeof document === "undefined") return;
+  try {
+    const settings = JSON.parse(localStorage.getItem("evelyn-settings") || "{}");
+    if (settings.kanyeVoiceEnabled === false) return;
+  } catch { /* ignore */ }
+
+  const el = document.createElement("div");
+  el.innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:10px;">
+      <span style="font-size:28px;line-height:1;flex-shrink:0;">🐻</span>
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;color:#a78bfa;margin-bottom:4px;font-family:monospace;">YE</div>
+        <div style="font-size:13px;font-style:italic;line-height:1.4;color:#e2e8f0;">"${text}"</div>
+      </div>
+    </div>
+  `;
+  Object.assign(el.style, {
+    position: "fixed",
+    bottom: "80px",
+    right: "24px",
+    zIndex: "99999",
+    background: "rgba(10,8,20,0.96)",
+    border: "1px solid rgba(139,92,246,0.4)",
+    borderRadius: "16px",
+    padding: "14px 16px",
+    maxWidth: "280px",
+    boxShadow: "0 0 24px rgba(139,92,246,0.25), 0 8px 32px rgba(0,0,0,0.6)",
+    backdropFilter: "blur(12px)",
+    fontFamily: "system-ui, sans-serif",
+    transition: "opacity 0.3s ease, transform 0.3s ease",
+    opacity: "0",
+    transform: "translateY(12px) scale(0.95)",
+    pointerEvents: "none",
+  });
+
+  document.body.appendChild(el);
+
+  // Animate in
+  requestAnimationFrame(() => {
+    el.style.opacity = "1";
+    el.style.transform = "translateY(0) scale(1)";
+  });
+
+  // Animate out after 3.5s
+  setTimeout(() => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(-8px) scale(0.97)";
+    setTimeout(() => el.remove(), 350);
+  }, 3500);
 }
 
-export function kanyeSayLevelUp() {
-  speak(pick(VOICE_LINES.levelUp));
-}
-
-export function kanyeSayAchievement() {
-  speak(pick(VOICE_LINES.achievement));
-}
-
-export function kanyeSayGreeting() {
-  speak(pick(VOICE_LINES.greeting));
-}
-
-export function kanyeSayCheckpoint() {
-  speak(pick(VOICE_LINES.checkpointDone));
-}
-
-export function kanyeSayRandom() {
-  speak(pick(VOICE_LINES.random));
-}
-
-/** Play a specific line by text — for the Easter egg etc */
-export function kanyeSay(text: string) {
-  speak(text);
-}
+export function kanyeSayQuestComplete() { showBubble(pick(VOICE_LINES.questComplete)); }
+export function kanyeSayLevelUp()       { showBubble(pick(VOICE_LINES.levelUp)); }
+export function kanyeSayAchievement()   { showBubble(pick(VOICE_LINES.achievement)); }
+export function kanyeSay(text: string)  { showBubble(text); }
+export function kanyeSayGreeting()      { showBubble(pick(VOICE_LINES.questComplete)); }
+export function kanyeSayCheckpoint()    { /* silent */ }
+export function kanyeSayRandom()        { showBubble(pick(VOICE_LINES.questComplete)); }
