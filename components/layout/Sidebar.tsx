@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  LayoutDashboard, Scroll, GitBranch, Trophy, BarChart2, Download, Upload, RotateCcw, Music2, Settings, Zap
+  LayoutDashboard, Scroll, GitBranch, Trophy, BarChart2, Download, Upload, RotateCcw, Music2, Settings, Zap, Smartphone
 } from "lucide-react";
 import { useQuestContext } from "@/context/QuestContext";
 import { getLevelInfo } from "@/lib/data/levels";
@@ -12,9 +12,12 @@ import { QUESTS } from "@/lib/data/quests";
 import { exportState, importState } from "@/lib/storage";
 import MuteButton from "@/components/ui/MuteButton";
 import VibeEqualizer from "@/components/ui/VibeEqualizer";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import SyncIndicator from "@/components/ui/SyncIndicator";
 import { useSyncStatus } from "@/context/SyncContext";
+import { AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
+const QRSyncModal = dynamic(() => import("@/components/ui/QRSyncModal"), { ssr: false });
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -31,6 +34,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { state, resetAll } = useQuestContext();
   const syncStatus = useSyncStatus();
+  const [showQR, setShowQR] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const levelInfo = getLevelInfo(state.totalXP);
   const next = levelInfo.next;
@@ -66,6 +70,7 @@ export default function Sidebar() {
   };
 
   return (
+    <>
     <aside
       className="hidden lg:flex flex-col w-64 min-h-screen sidebar-gradient relative"
     >
@@ -256,6 +261,14 @@ export default function Sidebar() {
               <Upload size={12} /> Import
             </button>
             <button
+              onClick={() => setShowQR(true)}
+              title="Sync na telefon (QR)"
+              className="p-1.5 rounded-lg text-xs transition-all duration-200 hover:bg-purple-500/10"
+              style={{ color: "var(--text-muted)", border: "1px solid rgba(139,92,246,0.12)" }}
+            >
+              <Smartphone size={12} />
+            </button>
+            <button
               onClick={handleReset}
               title="Reset vše"
               className="p-1.5 rounded-lg text-xs transition-all duration-200 hover:bg-red-500/10"
@@ -269,5 +282,10 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+
+    <AnimatePresence>
+      {showQR && <QRSyncModal onClose={() => setShowQR(false)} />}
+    </AnimatePresence>
+    </>
   );
 }
