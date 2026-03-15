@@ -10,7 +10,11 @@ export default function DifficultyStars({ difficulty, size = "md" }: Props) {
       {Array.from({ length: 5 }, (_, i) => (
         <span
           key={i}
-          style={{ color: i < difficulty ? "var(--xp-gold)" : "var(--text-muted)" }}
+          style={{
+            color: i < difficulty ? "var(--xp-gold)" : "transparent",
+            textShadow: i < difficulty ? "0 0 6px rgba(251,191,36,0.5), 0 0 12px rgba(251,191,36,0.2)" : "none",
+            WebkitTextStroke: i < difficulty ? "0" : "1px rgba(251,191,36,0.2)",
+          }}
         >
           ★
         </span>

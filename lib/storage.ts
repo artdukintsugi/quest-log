@@ -1,4 +1,4 @@
-const STORAGE_KEY = "evelyn-quest-log";
+export const STORAGE_KEY = "evelyn-quest-log";
 
 export interface QuestStateEntry {
   completed: boolean;

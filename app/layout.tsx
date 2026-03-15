@@ -22,6 +22,15 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Quest Log — Evelyn",
   description: "210 questů. XP systém. Gamifikovaný život.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Quest Log",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -31,11 +40,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <QuestProvider>
           <AppShell>
             <FloatingParticles />
-            <div className="flex min-h-screen relative z-10">
-              <Sidebar />
-              <main className="flex-1 pb-20 lg:pb-0 overflow-x-hidden">
-                {children}
-              </main>
+            {/* Ultrawide centering — max 1600px, pure black outside */}
+            <div className="max-w-[1600px] mx-auto relative">
+              <div className="flex min-h-screen relative z-10">
+                <Sidebar />
+                <main className="flex-1 pb-20 lg:pb-0 overflow-x-hidden">
+                  {children}
+                </main>
+              </div>
             </div>
             <BottomNav />
           </AppShell>

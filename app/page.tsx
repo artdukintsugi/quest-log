@@ -81,7 +81,7 @@ export default function Dashboard() {
           style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
         >
           Vítej zpět,{" "}
-          <span className="glow-text-purple" style={{ color: "var(--accent-secondary)" }}>Evelyn</span>
+          <span className="gradient-text-evelyn">Evelyn</span>
         </h1>
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
           {new Date().toLocaleDateString("cs-CZ", {

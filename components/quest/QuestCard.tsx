@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { Quest } from "@/lib/data/quests";
 import { getQuestStatus, getCheckpointProgress } from "@/lib/utils";
 import { useQuestContext } from "@/context/QuestContext";
 import DifficultyStars from "./DifficultyStars";
+import AskAIModal from "./AskAIModal";
 import { Lock, CheckCircle2, ChevronRight } from "lucide-react";
 
 interface Props {
@@ -18,13 +20,34 @@ export default function QuestCard({ quest, compact = false, index = 0 }: Props) 
   const { state } = useQuestContext();
   const status = getQuestStatus(quest.id, state.questStates, quest.prerequisites);
   const progress = getCheckpointProgress(quest, state.questStates);
+  const [showAI, setShowAI] = useState(false);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.4), ease: "easeOut" as const }}
+      className="group relative"
     >
+      {/* AI hover button */}
+      <button
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowAI(true); }}
+        className="absolute top-2.5 right-2.5 z-10 p-1.5 rounded-lg text-xs
+          opacity-0 group-hover:opacity-100
+          transition-all duration-200
+          hover:scale-110"
+        style={{
+          backgroundColor: "rgba(139,92,246,0.12)",
+          border: "1px solid rgba(139,92,246,0.2)",
+          color: "var(--accent-secondary)",
+        }}
+        title="Jak na to?"
+      >
+        🤖
+      </button>
+
+      <AskAIModal quest={quest} open={showAI} onClose={() => setShowAI(false)} />
+
       <Link href={`/quests/${quest.id}`}>
         <motion.div
           whileHover={{ scale: 1.01, y: -2 }}

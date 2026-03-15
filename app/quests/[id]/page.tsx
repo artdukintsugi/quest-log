@@ -14,6 +14,7 @@ import DifficultyStars from "@/components/quest/DifficultyStars";
 import {
   ChevronLeft, ChevronRight, Lock, CheckCircle2, Clock, Zap, ArrowLeft
 } from "lucide-react";
+import AskAIModal from "@/components/quest/AskAIModal";
 
 export default function QuestDetailPage() {
   const params = useParams();
@@ -21,6 +22,7 @@ export default function QuestDetailPage() {
   const id = Number(params.id);
   const { state, completeCheckpoint, completeQuest, uncompleteQuest } = useQuestContext();
   const [xpFloat, setXpFloat] = useState(false);
+  const [showAIModal, setShowAIModal] = useState(false);
 
   const quest = useMemo(() => QUESTS.find((q) => q.id === id), [id]);
   const prevQuest = QUESTS.find((q) => q.id === id - 1);
@@ -57,6 +59,7 @@ export default function QuestDetailPage() {
   };
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
@@ -228,9 +231,9 @@ export default function QuestDetailPage() {
         </div>
       )}
 
-      {/* Complete / Uncomplete */}
+      {/* Complete / Uncomplete + Ask AI */}
       {status !== "locked" && (
-        <div className="mb-4">
+        <div className="mb-4 flex flex-col gap-2">
           {status === "completed" ? (
             <button
               onClick={() => uncompleteQuest(quest.id)}
@@ -238,7 +241,7 @@ export default function QuestDetailPage() {
               style={{
                 borderColor: "rgba(100,116,139,0.2)",
                 color: "var(--text-muted)",
-                backgroundColor: "var(--bg-secondary)",
+                backgroundColor: "rgba(18,14,32,0.6)",
               }}
             >
               ↩ Označit jako nesplněné
@@ -254,7 +257,7 @@ export default function QuestDetailPage() {
                 background:
                   allCheckpointsDone || quest.checkpoints.length === 0
                     ? "linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))"
-                    : "var(--bg-tertiary)",
+                    : "rgba(26,14,46,0.6)",
                 color: "white",
                 boxShadow:
                   allCheckpointsDone || quest.checkpoints.length === 0
@@ -268,6 +271,19 @@ export default function QuestDetailPage() {
                 : `Dokonči checkpoints (${checkpoints.filter(Boolean).length}/${quest.checkpoints.length})`}
             </motion.button>
           )}
+          {/* Ask AI button */}
+          <button
+            onClick={() => setShowAIModal(true)}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm transition-all duration-300 border"
+            style={{
+              background: "linear-gradient(135deg, rgba(139,92,246,0.08), rgba(99,102,241,0.08))",
+              borderColor: "rgba(139,92,246,0.2)",
+              color: "var(--accent-secondary)",
+            }}
+          >
+            <span>🤖</span>
+            <span>Jak na to?</span>
+          </button>
         </div>
       )}
 
@@ -373,5 +389,9 @@ export default function QuestDetailPage() {
         ) : <div className="flex-1" />}
       </div>
     </motion.div>
+
+    {/* Ask AI Modal */}
+    <AskAIModal quest={quest} open={showAIModal} onClose={() => setShowAIModal(false)} />
+    </>
   );
 }

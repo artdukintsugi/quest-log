@@ -7,6 +7,7 @@ import LevelUpOverlay from "@/components/ui/LevelUpOverlay";
 import { ACHIEVEMENTS } from "@/lib/data/achievements";
 import { soundLevelUp, soundAchievement, soundComplete } from "@/lib/sounds";
 import { fireAchievement } from "@/lib/confetti";
+import CommandPalette from "@/components/ui/CommandPalette";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { justLeveledUp, newLevel, clearLevelUp, newlyUnlockedAchievements, clearNewAchievements } = useQuestContext();
@@ -49,6 +50,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       {children}
+      <CommandPalette />
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
       <LevelUpOverlay
         show={justLeveledUp}
