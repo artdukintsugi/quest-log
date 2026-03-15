@@ -26,4 +26,9 @@ export const ACTS: Act[] = [
   { id: 18, name: "Infrastructure", emoji: "🔧", range: [235, 249] },
   { id: 19, name: "Social & Future", emoji: "🌍", range: [239, 242] },
   { id: 20, name: "Meta Quests", emoji: "🏆", range: [243, 250] },
+  { id: 21, name: "Terminal & Ricing", emoji: "🖥️", range: [0, 0] },
+  { id: 22, name: "Kód & Skripty", emoji: "💻", range: [0, 0] },
+  { id: 23, name: "Privacy & Sítě", emoji: "🔒", range: [0, 0] },
+  { id: 24, name: "Knihy & Kurzy", emoji: "📚", range: [0, 0] },
+  { id: 25, name: "Community", emoji: "🌐", range: [0, 0] },
 ];

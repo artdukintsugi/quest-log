@@ -1087,7 +1087,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#linux", "#sway", "#wayland", "#art"],
-    act: 11,
+    act: 25,
     checkpoints: [
       "Čistý screenshot Sway desktopu připraven (grim/grimblast)",
       "Popis setup napsán (OS, WM, terminal, font, bar)",
@@ -1106,7 +1106,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#photo", "#hardware", "#productivity"],
-    act: 11,
+    act: 25,
     checkpoints: [
       "Setup uklizen a nachystan pro fotku",
       "iPhone ProRAW zapnut, dobré světlo nastaveno",
@@ -1125,7 +1125,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#neovim", "#linux", "#productivity", "#bash"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "lazy.nvim nainstalován a konfigurován",
       "LSP server pro TypeScript/Java/Python funguje",
@@ -1144,7 +1144,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#bash", "#linux", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "starship nainstalován (paru/cargo)",
       "eval \"$(starship init bash)\" v .bashrc/.zshrc",
@@ -1163,7 +1163,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#bash", "#linux", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "fzf nainstalován a shell integrace aktivní",
       "CTRL+R fuzzy history search funguje",
@@ -1200,7 +1200,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#obsidian", "#mac", "#productivity"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Apple Notes export do .enex nebo HTML",
       "Konverze do Markdown (exporter nebo ručně)",
@@ -1219,7 +1219,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#python", "#hardware", "#productivity"],
-    act: 11,
+    act: 5,
     checkpoints: [
       "Garmin Connect → Export dat jako CSV nebo FIT",
       "Python script načítá data (pandas)",
@@ -1238,7 +1238,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#creative", "#linux"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Wallpaper Engine Workshop editor otevřen",
       "Concept a styl wallpaperu navržen (dark/purple theme)",
@@ -1257,7 +1257,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#gaming", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Procreate canvas pro journal vytvořen",
       "Kresba po prvním bossovi (Eye of Cthulhu) hotová",
@@ -1276,7 +1276,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#gaming", "#music", "#audio"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "FL Studio track pro level hotový (30-60s smyčka)",
       "GD Editor otevřen, nový level vytvořen",
@@ -1295,7 +1295,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#gamedev", "#creative", "#unity"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Registrace na Ludum Dare nebo GMTK Game Jam",
       "Téma oznámeno, herní koncept navržen",
@@ -1314,7 +1314,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#gamedev", "#art", "#creative"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "ShaderToy účet vytvořen",
       "První shader: gradient nebo solid color funguje",
@@ -1333,7 +1333,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#homelab", "#linux", "#web"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Docker a Docker Compose nainstalovány",
       "První docker-compose.yml napsán (např. nginx + postgres)",
@@ -1352,7 +1352,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#homelab", "#privacy", "#networking"],
-    act: 11,
+    act: 23,
     checkpoints: [
       "Raspberry Pi nebo server připraven s Dockerem",
       "docker-compose.yml pro Vaultwarden napsán",
@@ -1371,7 +1371,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#networking", "#homelab", "#art"],
-    act: 11,
+    act: 23,
     checkpoints: [
       "Figma soubor vytvořen",
       "Všechna zařízení v síti sepsána (router, PC, RPi, etc.)",
@@ -1389,7 +1389,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#git", "#productivity", "#python"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "pre-commit nainstalován",
       ".pre-commit-config.yaml vytvořen v projektu",
@@ -1408,7 +1408,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#homelab", "#linux", "#privacy"],
-    act: 11,
+    act: 23,
     checkpoints: [
       "Restic nainstalován, repo inicializováno",
       "restic backup ~/Documents funguje",
@@ -1427,7 +1427,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#web", "#git", "#writing"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Astro projekt vytvořen (blog template)",
       "Vlastní design/barvy přizpůsobeny",
@@ -1446,7 +1446,7 @@ export const QUESTS: Quest[] = [
     xp: 200,
     prerequisites: [],
     tags: ["#linux", "#homelab", "#bash"],
-    act: 11,
+    act: 9,
     checkpoints: [
       "LFS kniha přečtena (Ch 1-2), partition připravena",
       "Host systém požadavky splněny, toolchain sestaven",
@@ -1465,7 +1465,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#git", "#linux", "#gamedev"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Open source projekt vybrán (Sway / Kitty / Godot)",
       "Issues prohlédnuty, 'good first issue' nalezeno",
@@ -1484,7 +1484,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#hardware", "#homelab", "#python"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Arduino nebo RPi připraven s IDE",
       "LEGO IR protokol zdokumentován a pochopen",
@@ -1503,7 +1503,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#productivity", "#adhd"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Baseline test na MonkeyType udělan (WPM změřeno)",
       "Dosaženo 70 WPM konzistentně",
@@ -1522,7 +1522,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#python", "#web", "#productivity"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Discord Developer Portal → bot token získán",
       "discord.py nainstalován, bot se přihlásí",
@@ -1541,7 +1541,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#python", "#gaming", "#web"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Riot Games API key získán",
       "Python script načítá summoner data a match history",
@@ -1560,7 +1560,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#music", "#audio", "#creative"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "SoundCloud účet vytvořen nebo přihlášen",
       "Track hotový v FL Studio (exportován jako MP3/WAV)",
@@ -1579,7 +1579,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#mac", "#productivity", "#web"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Raycast Extension template vytvořen",
       "Extension se builduje bez chyb",
@@ -1598,7 +1598,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#neovim", "#productivity", "#school"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "IdeaVim plugin nainstalován a povolen",
       "Základní navigace: hjkl, w, b, 0, $",
@@ -1617,7 +1617,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#git", "#school", "#productivity"],
-    act: 11,
+    act: 22,
     checkpoints: [
       ".github/workflows/ složka vytvořena",
       "ci.yml s on: push trigger napsán",
@@ -1636,7 +1636,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#sway", "#wayland", "#music", "#linux"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "playerctl nainstalován",
       "Bash script pro now playing (playerctl metadata)",
@@ -1655,7 +1655,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#bash", "#linux", "#productivity", "#git"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "~/bin/new-project script vytvořen a spustitelný",
       "Script přijímá název projektu jako argument",
@@ -1674,7 +1674,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#linux", "#privacy", "#art"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "toolkit.legacyUserProfileCustomizations.stylesheets → true",
       "chrome/userChrome.css soubor vytvořen",
@@ -1693,7 +1693,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#git", "#privacy", "#linux"],
-    act: 11,
+    act: 23,
     checkpoints: [
       "GPG klíč vygenerován (gpg --gen-key)",
       "Veřejný klíč přidán na GitHub",
@@ -1712,7 +1712,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#bash", "#linux", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "tmux nainstalován",
       "První session spuštěna (tmux new -s main)",
@@ -1749,7 +1749,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#sway", "#wayland", "#linux", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "Všechny bindsym z ~/.config/sway/config vypsány",
       "Cheat sheet v Markdown nebo HTML vytvořen",
@@ -1767,7 +1767,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#audio", "#linux", "#art"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "cava nainstalován (pacman -S cava)",
       "cava spuštěn, audio vizualizace funguje",
@@ -1785,7 +1785,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#bash", "#linux", "#git", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "git-reminder.service soubor vytvořen",
       "git-reminder.timer soubor vytvořen (daily)",
@@ -1804,7 +1804,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#python", "#web", "#productivity"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "requests + beautifulsoup4 nainstalovány",
       "Script načítá cenu produktu z Alza stránky",
@@ -1823,7 +1823,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#web", "#art", "#creative"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "app/not-found.tsx nebo pages/404.tsx vytvořen",
       "Kreativní design — terminal error estetika nebo glitch efekt",
@@ -1841,7 +1841,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#productivity", "#python", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "regex101.com otevřen, cheat sheet přečten",
       "Základy: ., *, +, ?, [], ^, $",
@@ -1896,7 +1896,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#mac", "#linux", "#sway", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "macOS: Automatic appearance v System Settings nastaveno",
       "Arch: wlsunset nebo gammastep nainstalován",
@@ -1951,7 +1951,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#linux", "#git", "#productivity", "#networking"],
-    act: 11,
+    act: 23,
     checkpoints: [
       "~/.ssh/config soubor vytvořen",
       "Host github.com s IdentityFile nakonfigurován",
@@ -1969,7 +1969,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#linux", "#art", "#bash"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "~/.config/kitty/kitty.conf otevřen",
       "Background a foreground barvy nastaveny (#0a0a0f dark)",
@@ -1988,7 +1988,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#reading", "#productivity", "#school"],
-    act: 11,
+    act: 24,
     checkpoints: [
       "Část I: A Pragmatic Philosophy přečtena",
       "Část II: A Pragmatic Approach přečtena",
@@ -2007,7 +2007,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#reading", "#school", "#productivity"],
-    act: 11,
+    act: 24,
     checkpoints: [
       "Part I: Foundations of Data Systems (Ch 1-3) přečtena",
       "Part II: Distributed Data (Ch 4-6) přečtena",
@@ -2044,7 +2044,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#gaming", "#linux", "#sway"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "ProtonGE nainstalován (paru -S proton-ge-custom)",
       "Steam → Settings → Steam Play → Proton GE vybrán",
@@ -2062,7 +2062,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#gaming", "#art"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "steamgriddb.com účet vytvořen",
       "Heroic nebo Boop nainstalován pro batch update",
@@ -2080,7 +2080,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#gaming", "#writing"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Hra vybrána pro recenzi",
       "Recenze napsána (min 200 slov)",
@@ -2098,7 +2098,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#web", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Figma soubor pro design system vytvořen",
       "Color styles definovány (primary, secondary, semantic)",
@@ -2117,7 +2117,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#art", "#creative", "#adhd"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Den 1-7: Základní tvary a čáry, daily habit nastaven",
       "Den 8-15: Portrét nebo postava každý den",
@@ -2136,7 +2136,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#blender", "#3d", "#creative"],
-    act: 11,
+    act: 24,
     checkpoints: [
       "Blender nainstalován, první shortcuty (G, S, R, E) naučeny",
       "Týden 2: Modifiers a edit mode shortcuts",
@@ -2155,7 +2155,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#gamedev", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Aseprite otevřen, nový 16x16 canvas vytvořen",
       "Ground tileset (solid, edge, corner) hotový",
@@ -2174,7 +2174,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#music", "#audio", "#creative"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "Píseň vybrána, BPM nastaveno v FL Studio",
       "Drum pattern replikován (kick, snare, hi-hat)",
@@ -2193,7 +2193,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#audio", "#music", "#creative"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "iPhone Voice Memos nebo Røde Reporter připraven",
       "Nahrávky z metra/tramvaje pořízeny",
@@ -2212,7 +2212,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#music", "#writing", "#creative"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "Téma nebo emoce písničky zvolena",
       "Obsidian → Music/lyrics.md vytvořen",
@@ -2231,7 +2231,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#school", "#linux", "#productivity"],
-    act: 11,
+    act: 24,
     checkpoints: [
       "texlive-full nainstalován",
       "hello.tex zkompilován přes pdflatex",
@@ -2268,7 +2268,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#mac", "#art", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Figma canvas 512x512 vytvořen pro ikony",
       "Ikony pro top 5 aplikací nakresleny (purple/dark theme)",
@@ -2287,7 +2287,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#homelab", "#linux", "#web"],
-    act: 11,
+    act: 24,
     checkpoints: [
       "Docker nainstalován, hello-world kontejner spuštěn",
       "První docker-compose.yml (nginx) napsán",
@@ -2306,7 +2306,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#gaming"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Všechny A-Sides dokončeny",
       "Všechny B-Sides dokončeny",
@@ -2325,7 +2325,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#writing", "#creative", "#productivity"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Obsidian → maja-guide.md vytvořen",
       "Sekce 'Jak přežít Evelynin terminál' napsána",
@@ -2381,7 +2381,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#video", "#linux", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "ffmpeg nainstalován (pacman -S ffmpeg)",
       "První konverze: MP4 → WebM funguje",
@@ -2400,7 +2400,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#mac", "#obsidian", "#productivity", "#adhd"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Raycast Obsidian extension nainstalován",
       "Vault cesta nakonfigurována",
@@ -2419,7 +2419,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#mac", "#productivity", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Hazel (macOS) nebo inotifywait (Linux) nastaven",
       "Pravidlo: Screenshots → ~/Screenshots/YYYY-MM/",
@@ -2437,7 +2437,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#hardware", "#homelab", "#python"],
-    act: 11,
+    act: 9,
     checkpoints: [
       "DHT22 senzor zapojen na RPi GPIO piny",
       "adafruit-circuitpython-dht nainstalováno",
@@ -2456,7 +2456,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#linux", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Archiso USB připraven",
       "Instalace zdokumentována jako skript nebo runbook",
@@ -2475,7 +2475,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#gamedev", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Open source hra nebo projekt vybrán",
       "Pixel art asset navržen a dokončen v Aseprite",
@@ -2513,7 +2513,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#audio", "#music", "#mac"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "FL Studio otevřen, 3 krátké zvuky navrženy",
       "Zvuky exportovány jako .aiff nebo .wav",
@@ -2531,7 +2531,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#python", "#productivity", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Datové zdroje definovány (git log, quest log, etc.)",
       "Python script sbírá data za uplynulý týden",
@@ -2550,7 +2550,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#school", "#python", "#productivity"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "SQLite databáze se sample daty vytvořena",
       "ROW_NUMBER() OVER(PARTITION BY ...) pochopen",
@@ -2569,7 +2569,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#python", "#school", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "questions.json formát navržen a první otázky přidány",
       "Python script načítá otázky a ptá se náhodně",
@@ -2606,7 +2606,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#sway", "#wayland", "#linux", "#photo"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "grim a slurp nainstalovány",
       "5 screenshotů různých workspace setupů pořízeno",
@@ -2642,7 +2642,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#music", "#adhd", "#productivity"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "Kategorie nálad/aktivit definovány (focus, hype, sad, chill, code)",
       "Playlist pro každou kategorii vytvořen",
@@ -2660,7 +2660,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#school", "#linux", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Hello world v C zkompilován a spuštěn",
       "Pointery a memory management pochopeny",
@@ -2679,7 +2679,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#ai", "#homelab", "#linux"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "docker-compose.yml s ollama service napsán",
       "Open WebUI service přidán",
@@ -2698,7 +2698,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#art", "#gamedev", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Figma soubor pro moodboard vytvořen",
       "Reference obrázky sesbírány (atmospheric, dark, dissociative)",
@@ -2735,7 +2735,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#sway", "#wayland", "#bash", "#linux"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "Minimálně 2 Waybar konfigurace vytvořeny (dark/light nebo purple/green)",
       "Bash script přijímá argument (theme name)",
@@ -2754,7 +2754,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#ai", "#obsidian", "#mac", "#productivity"],
-    act: 11,
+    act: 5,
     checkpoints: [
       "iOS Shortcuts app — Record Audio action přidán",
       "SSH nebo API endpoint pro Whisper nastaven",
@@ -2773,7 +2773,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#linux", "#productivity", "#school"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "Ch 1-2: Hello World, Guessing Game hotové",
       "Ch 3-4: Ownership a Borrowing pochopeny",
@@ -2792,7 +2792,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#obsidian", "#web", "#productivity"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "obsidian-sample-plugin template naklonován",
       "npm install, plugin se builduje",
@@ -2811,7 +2811,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#3d", "#blender", "#school"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Model navržen v Blenderu nebo Fusion 360",
       "Model exportován jako STL",
@@ -2830,7 +2830,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#creative", "#web"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "p5.js editor otevřen, setup() a draw() pochopeny",
       "Základní shapes a barvy nakresleny",
@@ -2849,7 +2849,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#gaming"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Nová hra spuštěna",
       "Ante 4 dosaženo",
@@ -2867,7 +2867,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#gaming"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "LiveSplit nainstalován, splits pro Celeste Any% nastaveny",
       "Celeste dokončena bez time limitu (first run)",
@@ -2886,7 +2886,7 @@ export const QUESTS: Quest[] = [
     xp: 200,
     prerequisites: [],
     tags: ["#adhd", "#productivity"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Den 1: Start zaznamenán v Obsidian",
       "Den 7: První týden hotový",
@@ -2905,7 +2905,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#adhd", "#productivity"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Obsidian → psychiatr-prep.md vytvořen",
       "Příznaky a příklady ze života sepsány",
@@ -2924,7 +2924,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Referenční foto Máji vybráno",
       "Procreate canvas vytvořen (2000x2000px)",
@@ -2943,7 +2943,7 @@ export const QUESTS: Quest[] = [
     xp: 100,
     prerequisites: [],
     tags: ["#art", "#music", "#creative"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "Koncept a nálada alba definovány",
       "Procreate canvas 3000x3000px vytvořen",
@@ -2998,7 +2998,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#linux", "#sway", "#art"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "Catppuccin-GTK nebo vlastní theme stažen",
       "Theme zkopírován do ~/.themes/",
@@ -3017,7 +3017,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#sway", "#wayland", "#python", "#bash"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "swaymsg -t get_tree | jq pochopen",
       "python-i3ipc nainstalován",
@@ -3054,7 +3054,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#writing", "#adhd", "#obsidian"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Obsidian → letters/ složka vytvořena",
       "Dopis za rok napsán (co chceš zažít, kým chceš být)",
@@ -3072,7 +3072,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#school", "#linux", "#bash"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "g++ -g flag — debug symbols kompilace",
       "gdb ./a.out spuštěn, break main nastaven",
@@ -3091,7 +3091,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#obsidian", "#art", "#productivity"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "Obsidian → Settings → Appearance → CSS snippets",
       "Nový .css soubor vytvořen ve vault/.obsidian/snippets/",
@@ -3110,7 +3110,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#linux", "#sway", "#bash", "#mac"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "Kolekce wallpaperů připravena v ~/wallpapers/",
       "Arch: Bash script vybírá náhodný wallpaper a volá swaybg",
@@ -3129,7 +3129,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#school", "#productivity", "#adhd"],
-    act: 11,
+    act: 24,
     checkpoints: [
       "Anki nainstalován",
       "Deck pro aktuální FEL předmět vytvořen",
@@ -3148,7 +3148,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#homelab", "#hardware", "#networking"],
-    act: 11,
+    act: 9,
     checkpoints: [
       "HAOS image flashován na SD kartu",
       "RPi bootuje Home Assistant",
@@ -3167,7 +3167,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#sway", "#wayland", "#linux", "#art"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "swaylock nebo swaylock-effects nainstalován",
       "Vlastní wallpaper nebo blur efekt nakonfigurován",
@@ -3186,7 +3186,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#gaming", "#video"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Steam Deck přepnut do Desktop Mode",
       "Boot animation ve správném formátu připravena (.webm nebo .mp4)",
@@ -3204,7 +3204,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#art", "#creative", "#adhd"],
-    act: 11,
+    act: 4,
     checkpoints: [
       "line-of-action.com záložka přidána",
       "Den 1-7: Denní cvičení, 30s pózy",
@@ -3242,7 +3242,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#music", "#audio", "#creative"],
-    act: 11,
+    act: 6,
     checkpoints: [
       "FL Studio projekt vytvořen",
       "Vital nebo Harmor pad základní texturu nastavil",
@@ -3261,7 +3261,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#web", "#art", "#creative"],
-    act: 11,
+    act: 22,
     checkpoints: [
       "app/not-found.tsx a error.tsx vytvořeny",
       "Terminal error estetika nebo glitch efekt přidán",
@@ -3279,7 +3279,7 @@ export const QUESTS: Quest[] = [
     xp: 50,
     prerequisites: [],
     tags: ["#gaming", "#homelab", "#hardware"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "RetroPie image flashován na SD kartu",
       "RPi bootuje do EmulationStation",
@@ -3298,7 +3298,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#git", "#linux", "#art"],
-    act: 11,
+    act: 25,
     checkpoints: [
       "README.md v dotfiles repo vytvořen/aktualizován",
       "Screenshots desktopu přidány",
@@ -3317,7 +3317,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#writing", "#art", "#adhd"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "GoodNotes nebo Notability nainstalován",
       "Nový notebook pro journal vytvořen",
@@ -3335,7 +3335,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#linux", "#art"],
-    act: 11,
+    act: 21,
     checkpoints: [
       "Catppuccin nebo Sekiro GRUB theme stažen",
       "Theme zkopírován do /boot/grub/themes/",
@@ -3354,7 +3354,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#gaming", "#productivity"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Google Sheets pro Stardew farmu vytvořen",
       "Crops tab: profit/day pro každou plodinu spočítán",
@@ -3373,7 +3373,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#gaming", "#obsidian", "#writing"],
-    act: 11,
+    act: 7,
     checkpoints: [
       "Obsidian → games/tier-list.md vytvořen",
       "Všechny hrané hry sepsány",
@@ -3391,7 +3391,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#productivity"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Recept vybrán (carbonara, bolognese nebo aglio e olio)",
       "Ingredience nakoupeny",
@@ -3409,7 +3409,7 @@ export const QUESTS: Quest[] = [
     xp: 200,
     prerequisites: [],
     tags: ["#writing", "#creative"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Klidné místo a čas vyhrazen",
       "Dopis napsán bez přemýšlení (stream of consciousness)",
@@ -3427,7 +3427,7 @@ export const QUESTS: Quest[] = [
     xp: 10,
     prerequisites: [],
     tags: ["#productivity", "#adhd"],
-    act: 11,
+    act: 8,
     checkpoints: [
       "Reminder 15.3.2027 v kalendáři nastaven",
       "Quest log otevřen za rok",
@@ -3445,7 +3445,7 @@ export const QUESTS: Quest[] = [
     xp: 25,
     prerequisites: [],
     tags: ["#privacy", "#linux", "#networking"],
-    act: 11,
+    act: 23,
     checkpoints: [
       "ProtonVPN nebo Mullvad nainstalován a přihlášen",
       "Kill switch aktivován (VPN down = no internet)",
