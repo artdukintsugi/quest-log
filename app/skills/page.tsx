@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuestContext } from "@/context/QuestContext";
 import { QUESTS } from "@/lib/data/quests";
 import { SKILL_DOMAINS, SKILL_CATEGORIES, SkillDomain } from "@/lib/data/skills";
 import Link from "next/link";
+import { ChevronDown, ChevronUp, CheckCircle2, Circle, Lock } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 14 } as const,
@@ -27,76 +28,135 @@ function SkillCard({ skill, questStates, delay }: {
   delay: number;
 }) {
   const { quests, completed, totalXP, pct } = getSkillStats(skill, questStates);
-  const [hover, setHover] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   if (quests.length === 0) return null;
+
+  // Sort: incomplete first, then done
+  const sortedQuests = [...quests].sort((a, b) => {
+    const aDone = questStates[a.id]?.completed ? 1 : 0;
+    const bDone = questStates[b.id]?.completed ? 1 : 0;
+    return aDone - bDone;
+  });
 
   return (
     <motion.div
       {...fadeUp(delay)}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className="rounded-xl border p-4 transition-all duration-200 relative overflow-hidden"
+      className="rounded-xl border transition-all duration-200 relative overflow-hidden"
       style={{
-        backgroundColor: hover ? "rgba(18,18,26,0.9)" : "rgba(12,12,18,0.6)",
-        borderColor: hover ? `${skill.color}40` : "rgba(255,255,255,0.05)",
-        boxShadow: hover ? `0 0 24px ${skill.color}15` : "none",
+        backgroundColor: expanded ? "rgba(18,18,26,0.95)" : "rgba(12,12,18,0.6)",
+        borderColor: expanded ? `${skill.color}40` : "rgba(255,255,255,0.05)",
+        boxShadow: expanded ? `0 0 24px ${skill.color}15` : "none",
       }}
     >
-      {/* Ambient top-right glow on hover */}
-      {hover && (
-        <div
-          className="absolute -top-6 -right-6 w-20 h-20 rounded-full pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${skill.color}20, transparent 70%)` }}
-        />
-      )}
-
-      <div className="flex items-start gap-3 mb-3">
-        <span className="text-2xl leading-none mt-0.5">{skill.emoji}</span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <span className="font-semibold text-sm" style={{ color: "var(--text-primary)" }}>
-              {skill.name}
-            </span>
-            {pct === 100 && (
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ backgroundColor: `${skill.color}20`, color: skill.color }}>
-                MASTERED
+      {/* Clickable header */}
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className="w-full text-left p-4 cursor-pointer"
+      >
+        <div className="flex items-start gap-3 mb-3">
+          <span className="text-2xl leading-none mt-0.5">{skill.emoji}</span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="font-semibold text-sm" style={{ color: "var(--text-primary)" }}>
+                {skill.name}
               </span>
-            )}
+              {pct === 100 && (
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ backgroundColor: `${skill.color}20`, color: skill.color }}>
+                  MASTERED
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-3 text-[11px]" style={{ color: "var(--text-muted)" }}>
+              <span className="font-mono">{completed.length}/{quests.length} questů</span>
+              <span className="font-mono font-bold" style={{ color: "var(--xp-gold)" }}>{totalXP} XP</span>
+            </div>
           </div>
-          <div className="flex items-center gap-3 text-[11px]" style={{ color: "var(--text-muted)" }}>
-            <span className="font-mono">{completed.length}/{quests.length} questů</span>
-            <span className="font-mono font-bold" style={{ color: "var(--xp-gold)" }}>{totalXP} XP</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      <div className="w-full h-1.5 rounded-full mb-3 overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
-        <motion.div
-          className="h-1.5 rounded-full"
-          initial={{ width: 0 }}
-          animate={{ width: `${pct}%` }}
-          transition={{ duration: 0.8, delay, ease: "easeOut" }}
-          style={{
-            backgroundColor: skill.color,
-            boxShadow: pct > 0 ? `0 0 8px ${skill.color}60` : "none",
-          }}
-        />
-      </div>
-
-      {/* Apps */}
-      <div className="flex flex-wrap gap-1">
-        {skill.apps.slice(0, 5).map((app) => (
-          <span
-            key={app}
-            className="text-[9px] px-1.5 py-0.5 rounded font-mono"
-            style={{ backgroundColor: `${skill.color}12`, color: `${skill.color}cc`, border: `1px solid ${skill.color}20` }}
-          >
-            {app}
+          <span style={{ color: "var(--text-muted)" }} className="shrink-0 mt-1">
+            {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </span>
-        ))}
-      </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full h-1.5 rounded-full mb-3 overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
+          <motion.div
+            className="h-1.5 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${pct}%` }}
+            transition={{ duration: 0.8, delay, ease: "easeOut" }}
+            style={{
+              backgroundColor: skill.color,
+              boxShadow: pct > 0 ? `0 0 8px ${skill.color}60` : "none",
+            }}
+          />
+        </div>
+
+        {/* Apps */}
+        <div className="flex flex-wrap gap-1">
+          {skill.apps.slice(0, 5).map((app) => (
+            <span
+              key={app}
+              className="text-[9px] px-1.5 py-0.5 rounded font-mono"
+              style={{ backgroundColor: `${skill.color}12`, color: `${skill.color}cc`, border: `1px solid ${skill.color}20` }}
+            >
+              {app}
+            </span>
+          ))}
+        </div>
+      </button>
+
+      {/* Expanded quest list */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div
+              className="mx-3 mb-3 rounded-lg overflow-hidden"
+              style={{ border: `1px solid ${skill.color}20`, backgroundColor: "rgba(0,0,0,0.3)" }}
+            >
+              {sortedQuests.map((quest, i) => {
+                const done = questStates[quest.id]?.completed;
+                const locked = quest.prerequisites?.some((pid) => !questStates[pid]?.completed);
+                return (
+                  <Link
+                    key={quest.id}
+                    href={`/quests/${quest.id}`}
+                    className="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 hover:bg-white/5 group"
+                    style={{
+                      borderTop: i > 0 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                    }}
+                  >
+                    {done ? (
+                      <CheckCircle2 size={13} style={{ color: "var(--success)", flexShrink: 0 }} />
+                    ) : locked ? (
+                      <Lock size={13} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
+                    ) : (
+                      <Circle size={13} style={{ color: skill.color, flexShrink: 0 }} />
+                    )}
+                    <span
+                      className="text-xs flex-1 min-w-0 truncate"
+                      style={{ color: done ? "var(--text-muted)" : "var(--text-secondary)", textDecoration: done ? "line-through" : "none" }}
+                    >
+                      <span className="font-mono text-[10px] mr-1.5" style={{ color: "var(--text-muted)" }}>
+                        #{String(quest.id).padStart(3, "0")}
+                      </span>
+                      {quest.title}
+                    </span>
+                    <span className="text-[10px] font-mono shrink-0" style={{ color: "var(--xp-gold)" }}>
+                      {quest.xp} XP
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
