@@ -160,30 +160,47 @@ export default function Sidebar() {
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative"
-                style={
-                  active
-                    ? {
-                        backgroundColor: "rgba(139,92,246,0.12)",
-                        color: "var(--accent-secondary)",
-                        boxShadow: "0 0 16px rgba(139,92,246,0.06)",
-                      }
-                    : { color: "var(--text-muted)" }
-                }
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-150 relative group ${
+                  active ? "text-purple-300" : "text-slate-500 hover:text-slate-200"
+                }`}
               >
+                {/* Sliding active background */}
                 {active && (
                   <motion.div
-                    layoutId="sidebarIndicator"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
+                    layoutId="sidebarBg"
+                    className="absolute inset-0 rounded-xl"
                     style={{
-                      background: "linear-gradient(180deg, var(--accent-primary), var(--accent-secondary))",
-                      boxShadow: "0 0 8px var(--accent-glow)",
+                      backgroundColor: "rgba(139,92,246,0.13)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
                     }}
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                <Icon size={17} />
-                {label}
+                {/* Hover bg for inactive items */}
+                {!active && (
+                  <div
+                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                    style={{ backgroundColor: "rgba(255,255,255,0.035)" }}
+                  />
+                )}
+                {/* Left accent bar */}
+                {active && (
+                  <motion.div
+                    layoutId="sidebarAccent"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full z-10"
+                    style={{
+                      background: "linear-gradient(180deg, #8b5cf6, #a78bfa)",
+                      boxShadow: "0 0 10px rgba(139,92,246,0.6)",
+                    }}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <Icon
+                  size={17}
+                  className="relative z-10 shrink-0 transition-all duration-150"
+                  style={active ? { filter: "drop-shadow(0 0 5px rgba(139,92,246,0.5))" } : {}}
+                />
+                <span className="relative z-10">{label}</span>
               </Link>
             );
           })}

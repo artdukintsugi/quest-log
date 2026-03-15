@@ -6,6 +6,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import BottomNav from "@/components/layout/BottomNav";
 import AppShell from "@/components/AppShell";
 import FloatingParticles from "@/components/ui/FloatingParticles";
+import PageTransition from "@/components/ui/PageTransition";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="flex min-h-screen relative z-10">
                 <Sidebar />
                 <main className="flex-1 pb-20 lg:pb-0 overflow-x-hidden">
-                  {children}
+                  <PageTransition>{children}</PageTransition>
                 </main>
               </div>
             </div>

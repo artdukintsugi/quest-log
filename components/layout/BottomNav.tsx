@@ -34,22 +34,53 @@ export default function BottomNav() {
             <Link
               key={href}
               href={href}
-              className="flex-1 flex flex-col items-center justify-center py-3 gap-1 text-[10px] font-medium relative"
-              style={{ color: active ? "var(--accent-secondary)" : "var(--text-muted)" }}
+              className="flex-1 flex flex-col items-center justify-center py-3 gap-0.5 relative"
             >
+              {/* Active top glow bar */}
               {active && (
                 <motion.div
-                  layoutId="bottomNavIndicator"
-                  className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full"
+                  layoutId="bottomNavBar"
+                  className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full"
                   style={{
-                    background: "linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))",
-                    boxShadow: "0 0 12px var(--accent-glow)",
+                    width: "2rem",
+                    background: "linear-gradient(90deg, #8b5cf6, #a78bfa)",
+                    boxShadow: "0 0 12px rgba(139,92,246,0.7)",
                   }}
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
-              <Icon size={20} style={active ? { filter: "drop-shadow(0 0 6px rgba(139,92,246,0.5))" } : {}} />
-              <span>{label}</span>
+              {/* Active pill bg */}
+              {active && (
+                <motion.div
+                  layoutId="bottomNavPill"
+                  className="absolute inset-x-2 inset-y-1 rounded-xl"
+                  style={{ backgroundColor: "rgba(139,92,246,0.08)" }}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <motion.div
+                animate={{
+                  scale: active ? 1 : 1,
+                  y: active ? -1 : 0,
+                }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="relative z-10"
+              >
+                <Icon
+                  size={20}
+                  style={{
+                    color: active ? "var(--accent-secondary)" : "var(--text-muted)",
+                    filter: active ? "drop-shadow(0 0 6px rgba(139,92,246,0.5))" : "none",
+                    transition: "color 0.15s, filter 0.15s",
+                  }}
+                />
+              </motion.div>
+              <span
+                className="text-[10px] font-medium relative z-10 transition-colors duration-150"
+                style={{ color: active ? "var(--accent-secondary)" : "var(--text-muted)" }}
+              >
+                {label}
+              </span>
             </Link>
           );
         })}
