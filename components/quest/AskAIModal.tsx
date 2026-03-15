@@ -3,8 +3,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Quest } from "@/lib/data/quests";
 import { QUESTS } from "@/lib/data/quests";
+import { useQuestContext } from "@/context/QuestContext";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Copy, Check, ExternalLink } from "lucide-react";
 
 interface Props {
   quest: Quest;
@@ -17,8 +18,7 @@ type AIService = {
   icon: string;
   color: string;
   border: string;
-  action?: "copy";
-  url?: (p: string) => string;
+  url: string;
 };
 
 const AI_SERVICES: AIService[] = [
@@ -27,29 +27,33 @@ const AI_SERVICES: AIService[] = [
     icon: "✨",
     color: "from-orange-500/15 to-amber-500/15",
     border: "border-orange-500/25",
-    url: (p) => `https://claude.ai/new?q=${encodeURIComponent(p)}`,
+    url: "https://claude.ai/new",
+  },
+  {
+    name: "ChatGPT",
+    icon: "🌿",
+    color: "from-emerald-500/15 to-teal-500/15",
+    border: "border-emerald-500/25",
+    url: "https://chat.openai.com",
   },
   {
     name: "Gemini",
     icon: "💎",
     color: "from-blue-500/15 to-cyan-500/15",
     border: "border-blue-500/25",
-    url: (p) => `https://gemini.google.com/app?text=${encodeURIComponent(p)}`,
-  },
-  {
-    name: "Kopírovat prompt",
-    icon: "📋",
-    color: "from-gray-500/15 to-gray-600/15",
-    border: "border-gray-500/20",
-    action: "copy",
+    url: "https://gemini.google.com/app",
   },
 ];
 
-function generateQuestPrompt(quest: Quest): string {
+function generateQuestPrompt(quest: Quest, completedTitles: string[]): string {
   const prereqNames = quest.prerequisites
     .map((id) => QUESTS.find((q) => q.id === id)?.title)
     .filter(Boolean)
     .join(", ");
+
+  const completedSection = completedTitles.length > 0
+    ? `\nUž jsem dokončila tyto projekty/questy:\n${completedTitles.slice(0, 20).map((t, i) => `${i + 1}. ${t}`).join("\n")}${completedTitles.length > 20 ? `\n... a dalších ${completedTitles.length - 20}` : ""}\n`
+    : "";
 
   return `Jsem Evelyn, studentka FEL ČVUT (OI, 2. ročník, game dev & computer graphics).
 
@@ -60,7 +64,7 @@ Můj setup:
 - iPad Pro 13" M4 + Apple Pencil Pro
 - Steam Deck OLED
 - iPhone 17 Pro
-
+${completedSection}
 Chci udělat tento projekt/quest:
 
 **${quest.title}** (Difficulty: ${"★".repeat(quest.difficulty)})
@@ -92,13 +96,25 @@ Začni prvním krokem. Co mám udělat TEĎ?`;
 
 export default function AskAIModal({ quest, open, onClose }: Props) {
   const [copied, setCopied] = useState(false);
-  const prompt = generateQuestPrompt(quest);
+  const { state } = useQuestContext();
 
-  const handleCopy = () => {
+  const completedTitles = QUESTS
+    .filter((q) => state.questStates[q.id]?.completed)
+    .map((q) => q.title);
+
+  const prompt = generateQuestPrompt(quest, completedTitles);
+
+  const copyPrompt = () => {
     navigator.clipboard.writeText(prompt);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    setTimeout(onClose, 300);
+    setTimeout(() => setCopied(false), 3000);
+  };
+
+  const handleOpenAI = (service: AIService) => {
+    // Copy first, then open — URL pre-fill is unreliable across AI services
+    navigator.clipboard.writeText(prompt).catch(() => {});
+    window.open(service.url, "_blank");
+    onClose();
   };
 
   return (
@@ -110,79 +126,100 @@ export default function AskAIModal({ quest, open, onClose }: Props) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ backgroundColor: "rgba(0,0,0,0.85)" }}
+          style={{ backgroundColor: "rgba(0,0,0,0.88)" }}
           onClick={onClose}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 12 }}
+            initial={{ opacity: 0, scale: 0.96, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 8 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            exit={{ opacity: 0, scale: 0.96, y: 8 }}
+            transition={{ duration: 0.16, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-md rounded-2xl p-6 border relative"
+            className="w-full max-w-sm rounded-2xl p-5 border relative"
             style={{
-              background: "linear-gradient(145deg, #0f0c1f 0%, #0a0814 100%)",
-              borderColor: "rgba(139,92,246,0.2)",
-              boxShadow: "0 0 60px rgba(139,92,246,0.12), 0 24px 48px rgba(0,0,0,0.7)",
+              background: "linear-gradient(160deg, #130f26 0%, #0a0814 100%)",
+              borderColor: "rgba(139,92,246,0.22)",
+              boxShadow: "0 0 48px rgba(139,92,246,0.1), 0 20px 40px rgba(0,0,0,0.8)",
             }}
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-lg transition-colors hover:bg-white/5"
+              className="absolute top-3.5 right-3.5 p-1.5 rounded-lg transition-colors hover:bg-white/5"
               style={{ color: "var(--text-muted)" }}
             >
-              <X size={16} />
+              <X size={14} />
             </button>
 
             <h3
-              className="text-lg font-bold mb-0.5"
+              className="text-base font-bold mb-0.5 pr-8"
               style={{ fontFamily: "var(--font-fraunces)", color: "var(--text-primary)" }}
             >
               🤖 Jak na to?
             </h3>
-            <p className="text-xs mb-5" style={{ color: "var(--text-muted)" }}>
-              Otevře AI s plným kontextem o tomhle questu
+            <p className="text-xs mb-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+              Prompt s kontextem questu + tvoje hotové projekty se zkopíruje do schránky, pak stačí vložit.
             </p>
 
-            <div className="space-y-2">
+            {/* Copy prompt button — primary action */}
+            <button
+              onClick={copyPrompt}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl mb-3 font-semibold text-sm transition-all duration-200"
+              style={{
+                background: copied
+                  ? "linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.08))"
+                  : "linear-gradient(135deg, rgba(139,92,246,0.2), rgba(99,102,241,0.15))",
+                border: `1px solid ${copied ? "rgba(34,197,94,0.3)" : "rgba(139,92,246,0.3)"}`,
+                color: copied ? "var(--success)" : "var(--accent-secondary)",
+              }}
+            >
+              {copied ? <Check size={15} /> : <Copy size={15} />}
+              {copied
+                ? `Zkopírováno! (${completedTitles.length} splněných questů v kontextu)`
+                : "Zkopírovat prompt"}
+            </button>
+
+            <p className="text-[11px] text-center mb-3" style={{ color: "var(--text-muted)" }}>
+              Pak otevři AI a vlož (Ctrl+V / Cmd+V):
+            </p>
+
+            {/* AI service links */}
+            <div className="grid grid-cols-3 gap-2">
               {AI_SERVICES.map((service) => (
                 <button
                   key={service.name}
-                  onClick={() => {
-                    if (service.action === "copy") {
-                      handleCopy();
-                    } else if (service.url) {
-                      window.open(service.url(prompt), "_blank");
-                      onClose();
-                    }
-                  }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r ${service.color} border ${service.border} hover:brightness-125 transition-all duration-200 text-left`}
+                  onClick={() => handleOpenAI(service)}
+                  className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl bg-gradient-to-b ${service.color} border ${service.border} hover:brightness-125 transition-all duration-200`}
                 >
-                  <span className="text-xl">{service.icon}</span>
-                  <div>
-                    <div className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
-                      {service.action === "copy" && copied ? "Zkopírováno! ✓" : service.name}
-                    </div>
-                    <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-                      {service.action === "copy" ? "Do schránky" : "Otevřít v novém tabu"}
-                    </div>
+                  <span className="text-lg">{service.icon}</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                      {service.name}
+                    </span>
+                    <ExternalLink size={9} style={{ color: "var(--text-muted)" }} />
                   </div>
                 </button>
               ))}
             </div>
 
-            <details className="mt-4">
+            {completedTitles.length > 0 && (
+              <p className="text-[10px] mt-3 text-center" style={{ color: "rgba(100,116,139,0.5)" }}>
+                Prompt obsahuje {completedTitles.length} splněných questů jako kontext
+              </p>
+            )}
+
+            {/* Prompt preview */}
+            <details className="mt-3">
               <summary
-                className="text-xs cursor-pointer transition-colors hover:text-gray-400 select-none"
+                className="text-[11px] cursor-pointer transition-colors hover:text-gray-400 select-none"
                 style={{ color: "var(--text-muted)" }}
               >
-                Zobrazit vygenerovaný prompt
+                Zobrazit prompt ({prompt.length} znaků)
               </summary>
               <pre
-                className="mt-2 p-3 text-xs rounded-lg overflow-auto max-h-40 whitespace-pre-wrap"
+                className="mt-2 p-2.5 text-[10px] rounded-lg overflow-auto max-h-32 whitespace-pre-wrap"
                 style={{
                   color: "var(--text-muted)",
-                  backgroundColor: "rgba(0,0,0,0.4)",
+                  backgroundColor: "rgba(0,0,0,0.5)",
                   border: "1px solid rgba(255,255,255,0.04)",
                 }}
               >

@@ -34,7 +34,9 @@ html {
 
 body {
   background-color: #000000;
-  background-image: none;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(88, 28, 235, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
   background-attachment: fixed;
   color: var(--text-primary);
   font-family: "JetBrains Mono", "Courier New", monospace;
@@ -64,25 +66,26 @@ body {
 }
 
 /* === GLASS CARDS (OLED-optimized) === */
-/* On true black, blur has nothing to blur. Use gradient bg + deep shadow instead */
 .glass {
-  background: linear-gradient(145deg, rgba(18, 14, 32, 0.95) 0%, rgba(12, 10, 22, 0.98) 100%);
+  background: linear-gradient(160deg, rgba(22, 16, 40, 0.98) 0%, rgba(10, 8, 20, 0.99) 100%);
   border: 1px solid var(--card-border);
   box-shadow:
-    0 4px 32px rgba(0,0,0,0.6),
-    0 1px 0 rgba(255,255,255,0.03) inset,
-    0 -1px 0 rgba(0,0,0,0.3) inset;
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 -1px 0 rgba(0,0,0,0.5) inset,
+    0 8px 32px rgba(0,0,0,0.5),
+    0 2px 8px rgba(0,0,0,0.3);
+  will-change: transform;
 }
 
 .glass-hover {
-  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 .glass-hover:hover {
   border-color: var(--card-border-hover);
   box-shadow:
-    0 0 24px rgba(139,92,246,0.1),
-    0 8px 32px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.05);
+    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 0 20px rgba(139,92,246,0.08),
+    0 8px 32px rgba(0,0,0,0.5);
 }
 
 /* === GLOW EFFECTS === */

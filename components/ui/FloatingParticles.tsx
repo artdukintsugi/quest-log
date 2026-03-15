@@ -12,6 +12,9 @@ interface Particle {
   hue: number;
 }
 
+const TARGET_FPS = 24;
+const FRAME_MS = 1000 / TARGET_FPS;
+
 export default function FloatingParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -22,8 +25,9 @@ export default function FloatingParticles() {
     if (!ctx) return;
 
     let animId: number;
-    let particles: Particle[] = [];
-    const COUNT = 40;
+    let lastTime = 0;
+    const COUNT = 18; // was 40 — radial gradient per particle was killing GPU
+    const particles: Particle[] = [];
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -32,50 +36,43 @@ export default function FloatingParticles() {
     resize();
     window.addEventListener("resize", resize);
 
-    // init particles
     for (let i = 0; i < COUNT; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.1 - 0.05,
-        size: Math.random() * 2 + 0.5,
-        alpha: Math.random() * 0.3 + 0.05,
-        hue: Math.random() > 0.7 ? 45 : 270, // gold or purple
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.12 - 0.04,
+        size: Math.random() * 1.5 + 0.5,
+        alpha: Math.random() * 0.25 + 0.05,
+        hue: Math.random() > 0.7 ? 45 : 270,
       });
     }
 
-    const draw = () => {
+    const draw = (ts: number) => {
+      animId = requestAnimationFrame(draw);
+      if (ts - lastTime < FRAME_MS) return;
+      lastTime = ts;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-
-        // wrap
         if (p.x < -10) p.x = canvas.width + 10;
         if (p.x > canvas.width + 10) p.x = -10;
         if (p.y < -10) p.y = canvas.height + 10;
         if (p.y > canvas.height + 10) p.y = -10;
 
-        // glow
-        ctx.beginPath();
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
         const color = p.hue === 270 ? "139,92,246" : "251,191,36";
-        grad.addColorStop(0, `rgba(${color},${p.alpha})`);
-        grad.addColorStop(1, `rgba(${color},0)`);
-        ctx.fillStyle = grad;
-        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // core
+        // Simple filled circle — no radial gradient per particle
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${color},${p.alpha * 1.5})`;
-        ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${color},${p.alpha})`;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
       }
-      animId = requestAnimationFrame(draw);
     };
-    draw();
+
+    animId = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(animId);
@@ -87,7 +84,7 @@ export default function FloatingParticles() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.5 }}
       aria-hidden="true"
     />
   );
