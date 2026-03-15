@@ -11,6 +11,7 @@ import { getLevelInfo } from "@/lib/data/levels";
 import { QUESTS } from "@/lib/data/quests";
 import { exportState, importState } from "@/lib/storage";
 import MuteButton from "@/components/ui/MuteButton";
+import VibeEqualizer from "@/components/ui/VibeEqualizer";
 import { useRef } from "react";
 
 const navItems = [
@@ -226,6 +227,9 @@ export default function Sidebar() {
               />
             </div>
           </div>
+
+          {/* Now playing vibe */}
+          <VibeEqualizer />
 
           {/* Actions */}
           <div className="flex items-center gap-1">
