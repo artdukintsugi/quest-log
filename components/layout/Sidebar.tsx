@@ -68,7 +68,6 @@ export default function Sidebar() {
   return (
     <aside
       className="hidden lg:flex flex-col w-64 min-h-screen sidebar-gradient relative"
-      style={{ boxShadow: "1px 0 0 0 rgba(139,92,246,0.06), 8px 0 32px 0 rgba(0,0,0,0.6)" }}
     >
       {/* Ambient glow at top */}
       <div

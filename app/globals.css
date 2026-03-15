@@ -295,11 +295,24 @@ a, button, [role="button"], select, label[for], input[type="checkbox"] {
 
 /* === SIDEBAR GRADIENT === */
 .sidebar-gradient {
+  background: var(--bg-primary);
+  position: relative;
+}
+
+/* Feathered right edge — fades sidebar into the page background */
+.sidebar-gradient::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -32px;
+  width: 32px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
   background: linear-gradient(
-    180deg,
-    rgba(7, 5, 12, 1) 0%,
-    rgba(4, 3, 8, 1) 50%,
-    rgba(2, 1, 5, 1) 100%
+    to right,
+    var(--bg-primary) 0%,
+    transparent 100%
   );
 }
 

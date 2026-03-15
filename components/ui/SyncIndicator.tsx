@@ -34,7 +34,16 @@ export default function SyncIndicator({ status }: Props) {
   }, []);
 
   const isConfigured = !!getGistConfig()?.token;
-  if (!isConfigured) return null;
+  if (!isConfigured) return (
+    <div
+      className="flex items-center gap-1 px-2 py-1 rounded-md opacity-30"
+      style={{ color: "var(--text-muted)" }}
+      title="Cloud sync not configured — go to Settings"
+    >
+      <Cloud size={10} />
+      <span className="text-[9px] font-mono">no cloud sync</span>
+    </div>
+  );
 
   const configs = {
     idle: {
