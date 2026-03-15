@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuestContext } from "@/context/QuestContext";
 import { useSettings, AppSettings } from "@/hooks/useSettings";
@@ -8,9 +8,11 @@ import { exportState, importState, resetState } from "@/lib/storage";
 import { soundTick, soundComplete, soundLevelUp, soundAchievement } from "@/lib/sounds";
 import YouAreEnough from "@/components/adhd/YouAreEnough";
 import MantraDisplay from "@/components/adhd/MantraDisplay";
+import { useGistSync } from "@/hooks/useGistSync";
+import { getGistConfig, saveGistConfig, clearGistConfig, validateToken } from "@/lib/gist-sync";
 import {
-  Volume2, VolumeX, Sparkles, Palette, Type, Moon, AlertTriangle,
-  Download, Upload, Trash2, RefreshCw, Heart
+  Volume2, Sparkles, Palette, Moon, AlertTriangle,
+  Download, Upload, Trash2, RefreshCw, Heart, Cloud, CloudOff, Check, Loader2
 } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
@@ -101,6 +103,46 @@ export default function SettingsPage() {
   const [importSuccess, setImportSuccess] = useState(false);
   const [showYouAreEnough, setShowYouAreEnough] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Gist sync state
+  const { push, pull, status: syncStatus, lastSync, errorMsg } = useGistSync();
+  const [tokenInput, setTokenInput] = useState("");
+  const [gistIdInput, setGistIdInput] = useState("");
+  const [validating, setValidating] = useState(false);
+  const [validatedUser, setValidatedUser] = useState<string | null>(null);
+  const [gistConnected, setGistConnected] = useState(false);
+
+  useEffect(() => {
+    const cfg = getGistConfig();
+    if (cfg?.token) {
+      setGistConnected(true);
+      if (cfg.gistId) setGistIdInput(cfg.gistId);
+    }
+  }, []);
+
+  const handleConnectGist = async () => {
+    if (!tokenInput.trim()) return;
+    setValidating(true);
+    try {
+      const login = await validateToken(tokenInput.trim());
+      setValidatedUser(login);
+      saveGistConfig({ token: tokenInput.trim(), gistId: gistIdInput.trim() || null, lastSync: null });
+      setGistConnected(true);
+      soundComplete();
+    } catch {
+      alert("Token neplatný nebo nemá gist scope.");
+    } finally {
+      setValidating(false);
+    }
+  };
+
+  const handleDisconnect = () => {
+    clearGistConfig();
+    setGistConnected(false);
+    setValidatedUser(null);
+    setTokenInput("");
+    setGistIdInput("");
+  };
 
   const handleExport = () => {
     exportState();
@@ -372,6 +414,112 @@ export default function SettingsPage() {
               >
                 💜 &ldquo;You Are Enough&rdquo; screen
               </motion.button>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Cloud Sync */}
+        <motion.div {...fadeUp(0.22)}>
+          <Card>
+            <SectionHeader icon={<Cloud size={16} />} title="Cloud Sync (GitHub Gist)" />
+            <div className="flex flex-col gap-3">
+              {!gistConnected ? (
+                <>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                    Ulož svůj progress do privátního GitHub Gistu — dostupný z jakéhokoliv zařízení. Potřebuješ{" "}
+                    <a href="https://github.com/settings/tokens/new?scopes=gist" target="_blank" rel="noopener" className="underline" style={{ color: "var(--accent-secondary)" }}>
+                      PAT token se scope <code>gist</code>
+                    </a>.
+                  </p>
+                  <input
+                    type="password"
+                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                    value={tokenInput}
+                    onChange={(e) => setTokenInput(e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl text-sm font-mono outline-none border"
+                    style={{
+                      backgroundColor: "var(--bg-primary)",
+                      color: "var(--text-primary)",
+                      borderColor: "rgba(139,92,246,0.2)",
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Gist ID (volitelné — nech prázdné pro vytvoření nového)"
+                    value={gistIdInput}
+                    onChange={(e) => setGistIdInput(e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl text-sm font-mono outline-none border"
+                    style={{
+                      backgroundColor: "var(--bg-primary)",
+                      color: "var(--text-primary)",
+                      borderColor: "rgba(139,92,246,0.15)",
+                    }}
+                  />
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={handleConnectGist}
+                    disabled={!tokenInput.trim() || validating}
+                    className="w-full py-3 rounded-xl text-sm font-semibold border transition-all flex items-center justify-center gap-2"
+                    style={{
+                      borderColor: "rgba(139,92,246,0.3)",
+                      color: "var(--accent-secondary)",
+                      backgroundColor: "rgba(139,92,246,0.08)",
+                      opacity: !tokenInput.trim() ? 0.5 : 1,
+                    }}
+                  >
+                    {validating ? <Loader2 size={14} className="animate-spin" /> : <Cloud size={14} />}
+                    {validating ? "Ověřuji token..." : "Připojit GitHub"}
+                  </motion.button>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl" style={{ backgroundColor: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.2)" }}>
+                    <Check size={14} style={{ color: "var(--success)" }} />
+                    <span className="text-sm" style={{ color: "var(--success)" }}>
+                      Připojeno{validatedUser ? ` jako @${validatedUser}` : ""}
+                    </span>
+                    {lastSync && (
+                      <span className="ml-auto text-xs font-mono" style={{ color: "var(--text-muted)" }}>
+                        sync {new Date(lastSync).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      onClick={push}
+                      disabled={syncStatus === "syncing"}
+                      className="py-2.5 rounded-xl text-sm font-semibold border transition-all flex items-center justify-center gap-2"
+                      style={{ borderColor: "rgba(139,92,246,0.2)", color: "var(--accent-secondary)", backgroundColor: "rgba(139,92,246,0.06)" }}
+                    >
+                      {syncStatus === "syncing" ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
+                      Push
+                    </motion.button>
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      onClick={pull}
+                      disabled={syncStatus === "syncing"}
+                      className="py-2.5 rounded-xl text-sm font-semibold border transition-all flex items-center justify-center gap-2"
+                      style={{ borderColor: "rgba(34,197,94,0.2)", color: "#22c55e", backgroundColor: "rgba(34,197,94,0.05)" }}
+                    >
+                      {syncStatus === "syncing" ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />}
+                      Pull
+                    </motion.button>
+                  </div>
+
+                  {syncStatus === "success" && (
+                    <p className="text-xs text-center" style={{ color: "var(--success)" }}>✓ Sync úspěšný</p>
+                  )}
+                  {syncStatus === "error" && (
+                    <p className="text-xs" style={{ color: "var(--danger)" }}>{errorMsg}</p>
+                  )}
+
+                  <button onClick={handleDisconnect} className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
+                    <CloudOff size={11} className="inline mr-1" />Odpojit
+                  </button>
+                </>
+              )}
             </div>
           </Card>
         </motion.div>
