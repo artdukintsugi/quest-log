@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 
 export interface AppSettings {
   soundsEnabled: boolean;
+  kanyeVoiceEnabled: boolean;
   animationsEnabled: boolean;
   glowEffects: boolean;
   accentColor: string;
@@ -16,6 +17,7 @@ const SETTINGS_KEY = "evelyn-settings";
 
 const DEFAULT_SETTINGS: AppSettings = {
   soundsEnabled: true,
+  kanyeVoiceEnabled: true,
   animationsEnabled: true,
   glowEffects: true,
   accentColor: "#8b5cf6",

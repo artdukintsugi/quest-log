@@ -22,6 +22,7 @@ import { computeSpecial } from "@/lib/data/special";
 import { computeEarnedItems } from "@/hooks/useInventory";
 import { computeDailyBonus } from "@/hooks/useDailyBonus";
 import { computeStreak } from "@/hooks/useStreak";
+import { kanyeSayQuestComplete, kanyeSayLevelUp, kanyeSayAchievement } from "@/lib/kanye-voice";
 
 const COMBO_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
@@ -215,12 +216,16 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
         if (curLevel > prevLevel) {
           setJustLeveledUp(true);
           setNewLevel(curLevel);
+          setTimeout(kanyeSayLevelUp, 800);
+        } else {
+          setTimeout(kanyeSayQuestComplete, 400);
         }
 
         const unlocked = checkAchievements(next);
         if (unlocked.length > 0) {
           next.achievements = [...next.achievements, ...unlocked];
           setNewlyUnlockedAchievements((a) => [...a, ...unlocked]);
+          setTimeout(kanyeSayAchievement, 1200);
         }
 
         saveState(next);

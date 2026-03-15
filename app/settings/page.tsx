@@ -173,6 +173,12 @@ export default function SettingsPage() {
                 value={settings.soundsEnabled}
                 onChange={(v) => updateSetting("soundsEnabled", v)}
               />
+              <Toggle
+                label="🐻 Kanye Voice"
+                description="Ye komentuje tvůj progres (Web Speech API)"
+                value={settings.kanyeVoiceEnabled}
+                onChange={(v) => updateSetting("kanyeVoiceEnabled", v)}
+              />
               {/* Sound test buttons */}
               <div>
                 <p className="text-xs mb-2" style={{ color: "var(--text-muted)" }}>Testovat zvuky:</p>

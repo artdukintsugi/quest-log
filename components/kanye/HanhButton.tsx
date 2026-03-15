@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { soundHanh } from "@/lib/sounds";
+import { kanyeSay } from "@/lib/kanye-voice";
 
 export default function HanhButton() {
   const [flashing, setFlashing] = useState(false);
@@ -11,6 +12,7 @@ export default function HanhButton() {
 
   function handleHanh() {
     soundHanh();
+    setTimeout(() => kanyeSay("Hanh?"), 300);
 
     // Confetti burst
     confetti({
