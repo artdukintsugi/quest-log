@@ -287,9 +287,9 @@ body {
 .sidebar-gradient {
   background: linear-gradient(
     180deg,
-    rgba(26, 26, 46, 0.98) 0%,
-    rgba(18, 18, 30, 0.95) 30%,
-    rgba(12, 12, 18, 0.98) 100%
+    rgba(7, 5, 12, 1) 0%,
+    rgba(4, 3, 8, 1) 50%,
+    rgba(2, 1, 5, 1) 100%
   );
 }
 
