@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useQuestContext } from "@/context/QuestContext";
 import { useSettings, AppSettings } from "@/hooks/useSettings";
@@ -12,7 +13,7 @@ import { useGistSync } from "@/hooks/useGistSync";
 import { getGistConfig, saveGistConfig, clearGistConfig, validateToken } from "@/lib/gist-sync";
 import {
   Volume2, Sparkles, Palette, Moon, AlertTriangle,
-  Download, Upload, Trash2, RefreshCw, Heart, Cloud, CloudOff, Check, Loader2
+  Download, Upload, Trash2, RefreshCw, Heart, Cloud, CloudOff, Check, Loader2, Smartphone, Copy
 } from "lucide-react";
 
 const fadeUp = (delay = 0) => ({
@@ -95,7 +96,7 @@ const ACCENT_PRESETS = [
   { color: "#ef4444", label: "Red" },
 ];
 
-export default function SettingsPage() {
+function SettingsPageInner() {
   const { resetAll } = useQuestContext();
   const { settings, updateSetting, resetSettings } = useSettings();
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -105,12 +106,14 @@ export default function SettingsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Gist sync state
+  const searchParams = useSearchParams();
   const { push, pull, status: syncStatus, lastSync, errorMsg } = useGistSync();
   const [tokenInput, setTokenInput] = useState("");
-  const [gistIdInput, setGistIdInput] = useState("");
+  const [gistIdInput, setGistIdInput] = useState(() => searchParams.get("gistId") ?? "");
   const [validating, setValidating] = useState(false);
   const [validatedUser, setValidatedUser] = useState<string | null>(null);
   const [gistConnected, setGistConnected] = useState(false);
+  const [phoneLinkCopied, setPhoneLinkCopied] = useState(false);
 
   useEffect(() => {
     const cfg = getGistConfig();
@@ -119,6 +122,15 @@ export default function SettingsPage() {
       if (cfg.gistId) setGistIdInput(cfg.gistId);
     }
   }, []);
+
+  const handleCopyPhoneLink = () => {
+    const cfg = getGistConfig();
+    if (!cfg?.gistId) return;
+    const url = `${window.location.origin}/settings?gistId=${cfg.gistId}`;
+    navigator.clipboard.writeText(url);
+    setPhoneLinkCopied(true);
+    setTimeout(() => setPhoneLinkCopied(false), 2500);
+  };
 
   const handleConnectGist = async () => {
     if (!tokenInput.trim()) return;
@@ -443,6 +455,11 @@ export default function SettingsPage() {
                       borderColor: "rgba(139,92,246,0.2)",
                     }}
                   />
+                  {searchParams.get("gistId") && (
+                    <p className="text-xs px-1 -mb-1" style={{ color: "var(--success)" }}>
+                      ✓ Gist ID předvyplněno — vlož PAT token a klikni Připojit
+                    </p>
+                  )}
                   <input
                     type="text"
                     placeholder="Gist ID (volitelné — nech prázdné pro vytvoření nového)"
@@ -514,6 +531,24 @@ export default function SettingsPage() {
                   {syncStatus === "error" && (
                     <p className="text-xs" style={{ color: "var(--danger)" }}>{errorMsg}</p>
                   )}
+
+                  {/* Phone setup link */}
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={handleCopyPhoneLink}
+                    className="w-full py-2.5 rounded-xl text-sm font-semibold border transition-all flex items-center justify-center gap-2"
+                    style={{
+                      borderColor: "rgba(139,92,246,0.2)",
+                      color: phoneLinkCopied ? "var(--success)" : "var(--accent-secondary)",
+                      backgroundColor: phoneLinkCopied ? "rgba(34,197,94,0.06)" : "rgba(139,92,246,0.06)",
+                    }}
+                  >
+                    {phoneLinkCopied ? <Check size={13} /> : <Smartphone size={13} />}
+                    {phoneLinkCopied ? "Odkaz zkopírován!" : "Zkopírovat odkaz pro telefon"}
+                  </motion.button>
+                  <p className="text-[10px] text-center leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                    Otevři odkaz na telefonu, vlož stejný PAT token → Připojit
+                  </p>
 
                   <button onClick={handleDisconnect} className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
                     <CloudOff size={11} className="inline mr-1" />Odpojit
@@ -644,5 +679,13 @@ export default function SettingsPage() {
         <YouAreEnough forceShow onDismiss={() => setShowYouAreEnough(false)} />
       )}
     </motion.div>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense>
+      <SettingsPageInner />
+    </Suspense>
   );
 }
