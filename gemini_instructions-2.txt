@@ -1,0 +1,216 @@
+To repo vypadá skvěle, ten stack (Next.js 15, Tailwind 4, Framer Motion) je přesně to, co tenhle typ "vysoko-dopaminové" aplikace potřebuje. Claude Code tomu dá ten vizuální „wow“ efekt, ale aby to byl skutečný Evelyn's Quest Log, chybí tam pár ultra-specifických věcí, které vycházejí z tvého setupu (SDR, M5 Pro, Garmin, FEL) a tvé identity.
+
+Tady je 50 doplňujících questů rozdělených do nových Aktů (XI–XX), které můžeš do toho .md souboru přihodit a nechat Claude Code, ať je naimportuje.
+🛰️ Akt XI: Signal Intelligence (SDR & Wireless)
+
+Využití tvého SDR donglu a zájmu o signály.
+
+101. NOAA Satellite Hunter: Zachytit a dekódovat meteorologický snímek z družice NOAA při přeletu nad Prahou.
+
+    Start: gpredict pro tracking + wxtoimg. | XP: 400 | Difficulty: ★★★★☆
+
+102. ADS-B Flight Radar: Rozběhnout vlastní lokální tracker letadel přes SDR a vizualizovat provoz nad Ruzyní.
+
+    Start: dump1090-fa v terminálu na Archu. | XP: 200 | Difficulty: ★★☆☆☆
+
+103. Pager Decoding: Dekódovat veřejné pagerové zprávy (HZS/ZZS) pomocí multimon-ng.
+
+    Start: Naladit 160.x MHz v gqrx. | XP: 250 | Difficulty: ★★★☆☆
+
+104. SDR Trunking: Nastavit sledování trunkových rádiových sítí v Praze.
+
+    Start: Instalace unitrunker nebo sdrtrunk. | XP: 350 | Difficulty: ★★★★☆
+
+105. ISS Contact Prep: Naplánovat a pokusit se o příjem SSTV obrázků z Mezinárodní vesmírné stanice (ISS).
+
+    Start: Sledování ARISS eventů. | XP: 500 | Difficulty: ★★★★★
+
+🧠 Akt XII: Neuro-Integration (DID & BPD Recovery)
+
+Questy pro stabilizaci a "safe space" v digitálu.
+
+106. The Anchor Page: Vytvořit v Obsidianu "kotvící stránku" pro stavy disociace (kdo jsem, kde jsem, co je za rok).
+
+    Start: Nový list v 🧠 Safe/. | XP: 300 | Difficulty: ★★★☆☆
+
+107. System Communication Log: Založit sdílený deník pro jednotlivé altery (DID), kde si mohou nechávat vzkazy.
+
+    Start: Obsidian složka Shared/. | XP: 400 | Difficulty: ★★★★☆
+
+108. Digital Crisis Box: Složka na ploše (Arch i Mac) s "emergency" materiály (oblíbený song, fotka Máji, dechové cvičení).
+
+    Start: mkdir ~/Desktop/EMERGENCY. | XP: 200 | Difficulty: ★☆☆☆☆
+
+109. Impulse Delay Script: Napsat si alias do terminálu, který se tě při pokusu o smazání něčeho důležitého zeptá 3x a donutí tě 10s počkat.
+
+    Start: Bash script confirm_rm.sh. | XP: 150 | Difficulty: ★★☆☆☆
+
+110. Sensory Profile: Definovat si v Obsidianu, jaké vjemy (barvy, zvuky) tě triggerují a jaké uklidňují.
+
+    Start: Tag #sensory. | XP: 100 | Difficulty: ★☆☆☆☆
+
+💻 Akt XIII: The Silicon Forge (Arch & Mac M5 Optimization)
+
+Ladění tvého crazy hardwaru na maximum.
+
+111. SwayFX Blur Migration: Přechod na SwayFX pro získání "rounded corners" a "gaussian blur" efektů, ať to vypadá jako macOS.
+
+    Start: yay -S swayfx. | XP: 200 | Difficulty: ★★☆☆☆
+
+112. M5 Pro MLX Training: Vyzkoušet Apple MLX framework a dotrénovat si lokální LLM na svých denících.
+
+    Start: pip install mlx-lm. | XP: 450 | Difficulty: ★★★★☆
+
+113. G9 Ultrawide Splitter: Napsat Sway script pro perfektní rozdělení 49" monitoru na 3 zóny (Code | Browser | Terminal/Obsidian).
+
+    Start: swaymsg commands. | XP: 150 | Difficulty: ★★☆☆☆
+
+114. Steam Deck Cloud Save Sync: Nastavit Syncthing tak, aby se savy z non-steam her (třeba emulátory) syncovaly na Arch i Mac.
+
+    Start: Syncthing v Desktop módu Decku. | XP: 250 | Difficulty: ★★★☆☆
+
+115. Anker 165W Dashboard: Widget na plochu (nebo modul do Waybaru), který ukazuje aktuální příkon z nabíječky Anker.
+
+    Start: USB-C PD data parsing. | XP: 300 | Difficulty: ★★★★☆
+
+🎓 Akt XIV: FEL Academic Warfare (Survival Guide)
+
+Aby tě to studium nezabilo.
+
+116. PGR Raytracing Pipeline: Implementovat do svého OpenGL projektu reálný raytracing přes shadery na RTX 3080.
+
+    Start: Compute shadery v C++. | XP: 600 | Difficulty: ★★★★★
+
+117. ALG Visualizer 2.0: Udělat si v Obsidianu interaktivní Canvas, kde můžeš hýbat uzly grafu (Dijkstra/BFS).
+
+    Start: Obsidian Canvas + Markdown links. | XP: 250 | Difficulty: ★★★☆☆
+
+118. Dejvice-Karlák Commute Podcast: Vytvořit si automatizovaný skript, který vezme PDF skripta a přes AI je převede na audio do MHD.
+
+    Start: OpenAI TTS API nebo lokální Piper. | XP: 300 | Difficulty: ★★★☆☆
+
+119. SSH Tunnel Mastery: Nastavit si bezheslový přístup a tunely na FEL servery (progres, dce) pro remote kódování z postele na Macu.
+
+    Start: ~/.ssh/config tuning. | XP: 100 | Difficulty: ★☆☆☆☆
+
+120. Moodle Deadlines to Calendar: Python skript, který scrapne Moodle a hodí ti deadliny do tvého Quest Logu jako side-questy.
+
+    Start: requests + beautifulsoup4. | XP: 350 | Difficulty: ★★★★☆
+
+🎮 Akt XV: Celeste-like Java Dev (Mundane Mountain)
+
+121. Frame Perfect Dash: Implementovat "Coyote Time" a "Jump Buffering" do tvé Javy, aby se postava ovládala stejně dobře jako Madeline.
+
+    Start: Physics update loop. | XP: 300 | Difficulty: ★★★☆☆
+
+122. Screen Shake System: Přidat vizuální feedback (třes obrazovky) při dopadu nebo dashi.
+
+    Start: Camera offset manipulation. | XP: 150 | Difficulty: ★★☆☆☆
+
+123. Tilemap Editor Integration: Napsat parser pro .tmx soubory z editoru Tiled do tvého enginu.
+
+    Start: XML/JSON parsing v Javě. | XP: 250 | Difficulty: ★★★☆☆
+
+124. Dynamic Music Layering: Hudba v levelu se mění podle toho, jak vysoko postava je (přidávání stop v reálném čase).
+
+    Start: OpenAL nebo Java Sound API. | XP: 400 | Difficulty: ★★★★☆
+
+125. The Moral Choice NPC: Implementovat první dialog s NPC, který reaguje na tvůj "Health Tracker" z reálného života.
+
+    Start: Dialogový systém. | XP: 200 | Difficulty: ★★☆☆☆
+
+🎨 Akt XVI: Digital Kanye Mode (Hudba & Estetika)
+
+126. Vocal Chop Masterclass: Udělat beat v FL Studiu postavený čistě na tvém vlastním hlase rozsekaném na kousky.
+
+    Start: Edison v FL Studio. | XP: 200 | Difficulty: ★★☆☆☆
+
+127. Catppuccin Everything: Sjednotit barvy naprosto všude (Obsidian, Sway, Alacritty, FL Studio skin, VS Code, Quest Log).
+
+    Start: ctp-colors. | XP: 150 | Difficulty: ★☆☆☆☆
+
+128. Lyrics AI Brainstormer: Prompt pro lokální LLM, který ti pomůže najít rýmy, co nejsou "cringe" a sedí do tvé nálady.
+
+    Start: System prompt pro Ollama. | XP: 100 | Difficulty: ★☆☆☆☆
+
+129. 4AM Ambient Session: Nahrát 10minutový ambientní track přímo ve 4 ráno, který reflektuje tvůj aktuální stav mysli.
+
+    Start: Record button v FL. | XP: 150 | Difficulty: ★☆☆☆☆
+
+130. Custom Soundfonts: Vytvořit si vlastní soundfont z nahraných zvuků tvého setupu (cvakání klávesnice, zvuk zapnutí G9).
+
+    Start: Kontakt nebo DirectWave. | XP: 300 | Difficulty: ★★★☆☆
+
+🧘 Akt XVII: Wellness & Maintenance
+
+131. Estrogen Level Tracker: Graf v Obsidianu (přes Dataview), který ukazuje korelaci mezi dnem aplikace Neofolinu a tvou energií.
+
+    Start: Property estrogen: date. | XP: 150 | Difficulty: ★☆☆☆☆
+
+132. Garmin Body Battery vs. Code: Exportovat data z Garminů a zjistit, v kolik hodin máš nejvyšší "kódovací efektivitu".
+
+    Start: CSV export z Garmin Connect. | XP: 200 | Difficulty: ★★☆☆☆
+
+133. Hydration Notifier (Sway): Malý skript, co ti do středu obrazovky hodí velký nápis "PIJ!", pokud jsi 2 hodiny nic neudělala s myší.
+
+    Start: swaynag nebo notify-send. | XP: 100 | Difficulty: ★☆☆☆☆
+
+134. Sunshine Quest: Strávit 30 minut venku, když svítí slunce, a jen pozorovat lidi (anti-burnout).
+
+    Start: Leave the building. | XP: 300 | Difficulty: ★☆☆☆☆
+
+135. Bedside Coding Station: Optimalizovat setup tak, abys mohla kódovat z postele na Macu bez bolesti zad (ergonomický polštář/stolek).
+
+    Start: Amazon/Alza wishlist. | XP: 100 | Difficulty: ★☆☆☆☆
+
+🛒 Akt XVIII: Hardware Upgrades & DIY
+
+136. Retractable Cable Management: Uspořádat všechny kabely u stolu tak, aby nebyly vidět, ale byly dostupné pro Steam Deck/Mac.
+
+    Start: Kabelové svorky. | XP: 200 | Difficulty: ★★★☆☆
+
+137. Wacom Tablet setup pro Arch: Rozběhnout Wacom One na Sway tak, aby fungoval tlak pera a mapování na G9.
+
+    Start: libwacom + otd. | XP: 250 | Difficulty: ★★★☆☆
+
+138. Custom Keyboard Layer: Nastavit si v QMK/VIA (pokud klávesnice podporuje) speciální vrstvu pro ovládání tvého Quest Logu.
+
+    Start: Mapování kláves. | XP: 150 | Difficulty: ★★☆☆☆
+
+139. iPhone 17 Pro Camera Rig: Vytvořit setup pro streamování tvého kódování/skládání hudby s iPhonem jako top-down kamerou.
+
+    Start: Continuity Camera na Macu. | XP: 150 | Difficulty: ★★☆☆☆
+
+140. Second Brain Backup (Physical): Jednou za měsíc vyexportovat nejdůležitější poznámky na fyzický šifrovaný disk.
+
+    Start: rsync script. | XP: 100 | Difficulty: ★☆☆☆☆
+
+🌍 Akt XIX: Social & Future (Side Quests)
+
+141. Májina Kolej Survivor: Sbalit si "survival kit" (technika + komfort) na víkend u Máji, aby tě nic nepřekvapilo.
+
+    Start: Checklist v Obsidianu. | XP: 150 | Difficulty: ★☆☆☆☆
+
+142. Portfolio Showcase: Přidat do svého Vercel portfolia sekci s tímto Quest Logem jako tvým největším projektem.
+
+    Start: Git push. | XP: 250 | Difficulty: ★★☆☆☆
+
+143. Career Roadmap: Definovat 5 firem v Praze, kde by tě bavilo dělat po FELu, a zjistit jejich tech stack.
+
+    Start: LinkedIn research. | XP: 100 | Difficulty: ★★☆☆☆
+
+144. LinkedIn Makeover: Upravit si LinkedIn tak, aby vypadal "profi" ale pořád "Evelyn" (fialová, game dev focus).
+
+    Start: New header image. | XP: 100 | Difficulty: ★☆☆☆☆
+
+145. Random Act of Kindness: Napsat někomu z FELu, kdo má problém s kódem, a pomoct mu (dopamin za pomoc).
+
+    Start: Discord FEL. | XP: 200 | Difficulty: ★★☆☆☆
+
+🏆 Akt XX: The 200th Meta-Quest
+
+146. XP Balance Review: Projít celý seznam 200 věcí a upravit XP tak, aby to dávalo smysl tvému progresu. | XP: 100
+147. Sound Design Upgrade: Nahrát vlastní zvuky pro aplikaci (click, quest complete, level up). | XP: 300
+148. The Yearly Mirror: Podívat se na seznam za rok a zjistit, kolik jsi toho reálně udělala. | XP: 500
+149. Share the Vault: Nasdílet šablonu tvého Obsidianu pro ostatní ADHD lidi na FELu. | XP: 400
+150. Level 10 Achieved: Dosáhnout v aplikaci Levelu 10 (Digital Kanye). | XP: 1000

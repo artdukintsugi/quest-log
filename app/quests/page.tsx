@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { QUESTS } from "@/lib/data/quests";
 import { ACTS } from "@/lib/data/acts";
 import { getQuestStatus } from "@/lib/utils";
@@ -62,7 +63,12 @@ export default function QuestsPage() {
   ).length;
 
   return (
-    <div className="p-4 lg:p-8 max-w-5xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="p-4 lg:p-8 max-w-5xl mx-auto"
+    >
       <div className="mb-6">
         <h1
           className="text-3xl font-bold mb-1"
@@ -74,17 +80,14 @@ export default function QuestsPage() {
           Quest Log
         </h1>
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-          {completedCount} / 200 dokončeno
+          {completedCount} / {QUESTS.length} dokončeno
         </p>
       </div>
 
       {/* Filters */}
       <div
-        className="rounded-xl p-4 mb-5 border flex flex-col gap-3"
-        style={{
-          backgroundColor: "var(--bg-secondary)",
-          borderColor: "rgba(139,92,246,0.15)",
-        }}
+        className="rounded-xl p-4 mb-5 border glass flex flex-col gap-3"
+        style={{ borderColor: "rgba(139,92,246,0.15)" }}
       >
         {/* Search */}
         <div className="relative">
@@ -225,9 +228,9 @@ export default function QuestsPage() {
       </p>
 
       {/* Quest list */}
-      <div className={`flex flex-col gap-2`}>
-        {filtered.map((quest) => (
-          <QuestCard key={quest.id} quest={quest} compact={compact} />
+      <div className="flex flex-col gap-2">
+        {filtered.map((quest, i) => (
+          <QuestCard key={quest.id} quest={quest} compact={compact} index={i} />
         ))}
         {filtered.length === 0 && (
           <div
@@ -238,6 +241,6 @@ export default function QuestsPage() {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

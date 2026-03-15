@@ -1,0 +1,401 @@
+To vypadá jako naprosto epický projekt. Claude Code na tom odvede skvělou práci, ale aby ten „Quest Log“ byl skutečně tvým digitálním odrazem, musí pokrývat i ty nejmenší technické detaily tvého specifického hardwaru (SDR, M5 Pro, G9) a života na FELu.
+
+Tady je 50 doplňujících questů, které v původním seznamu buď chybí, nebo jdou víc do hloubky tvého setupu. Jsou rozdělené do kategorií a formátované pro tvůj nový systém.
+🛰️ Akt XI: Signals & Hardware (SDR & Wireless)
+
+Tuhle sekci tam skoro nemáš a přitom máš v setupu SDR.
+
+1. SDR Air Traffic Radar
+Nastav svůj SDR dongle na Archu tak, aby přijímal ADSB signály z letadel nad Prahou. Vizualizuj si je v reálném čase na mapě.
+
+    Start: dump1090 v terminálu.
+
+    XP: 150 | Tags: #sdr #arch #signals
+
+2. Pager Message Sniffing (POC)
+Zkus zachytit a dekódovat lokální pagerové zprávy (samozřejmě jen ty nekódované/veřejné). Je to skvělý trénink na pochopení digitálních modulací.
+
+    Start: multimon-ng + SDRSharp/GQRX.
+
+    XP: 200 | Tags: #sdr #security #fel
+
+3. Garmin ↔ Arch Integration
+Vytvoř skript, který přes Bluetooth (bluez) vyčte tvoje ranní HRV a Body Battery z Garminů a automaticky ti změní jas monitoru G9 podle tvé únavy.
+
+    Start: Prozkoumej garmin-connect-export.
+
+    XP: 300 | Tags: #arch #garmin #automation
+
+4. Steam Deck "Desktop Mode" Rice
+Udělej ze Steam Decku (v desktop módu) zmenšenou kopii tvého Sway setupu. Stejné fonty (Maple Mono), stejné barvy (Catppuccin).
+
+    Start: Konfigurace KDE Plasma na Decku přes dotfiles.
+
+    XP: 100 | Tags: #steamos #ricing
+
+5. SDR Satellite Imagery (NOAA)
+Pokus se zachytit signál z projíždějící meteo družice NOAA, když je nad Prahou, a dekódovat aktuální satelitní snímek oblačnosti.
+
+    Start: Sledování přeletů v gpredict.
+
+    XP: 450 | Tags: #sdr #space #challenge
+
+🤖 Akt XII: AI & LLM (M5 Pro Optimization)
+
+Využití tvého Macu na maximum.
+
+6. Personal LoRA Training
+Zkus dotrénovat malý model (např. Mistral nebo Llama 3) na svých vlastních textech/lyrice z Obsidianu, aby se AI naučila tvůj styl psaní.
+
+    Start: Použij MLX framework na Macu.
+
+    XP: 500 | Tags: #ai #macOS #m5pro
+
+7. "Evelyn-GPT" Local Interface
+Vytvoř si v Raycastu custom script, který ti otevře lokální LLM v terminálu s promptem: "Jsi Evelynin asistent pro krizové stavy a kódování."
+
+    Start: Raycast Script Commands.
+
+    XP: 150 | Tags: #ai #productivity
+
+8. Whisper Auto-Transcriber for Lectures
+Napiš skript na Macu, který vezme audio nahrávku z přednášky na FELu a přes Whisper ji rozseká na odstavce a shrne pomocí AI do tvého Obsidianu.
+
+    Start: whisper.cpp (optimalizováno pro M-čipy).
+
+    XP: 250 | Tags: #ai #fel #school
+
+9. Stable Diffusion "Concept Art" Pipeline
+Rozběhni lokální Stable Diffusion na M5 Pro pro generování pozadí do tvé Celeste-like hry. Vytvoř workflow, kde promptuješ přímo z Obsidianu.
+
+    Start: DiffusionBee nebo Automatic1111 (Apple Silicon verze).
+
+    XP: 350 | Tags: #ai #gamedev #art
+
+10. AI Code Reviewer for Java (PJV)
+Nastav si v Neovimu/VS Code lokální AI, které ti bude vysvětlovat chyby v Javě, aniž bys musela posílat kód na servery OpenAI.
+
+    Start: Continue.dev + Ollama.
+
+    XP: 200 | Tags: #coding #ai #java
+
+🎓 Akt XIII: Advanced FEL & Coding
+
+Tohle jsou ty věci, co ti ušetří nervy u zkoušek.
+
+11. OSY: Shell Script Battle
+Napiš si sadu aliasů pro školní servery (progres, dce atd.), které ti jedním příkazem synchronizují lokální kód se serverem a spustí testy.
+
+    Start: Uprav ~/.ssh/config a .zshrc.
+
+    XP: 150 | Tags: #fel #bash #devops
+
+12. PGR: Ray Tracing Optimization
+Implementuj do svého shaderu "Bounding Volume Hierarchy" (BVH) pro zrychlení tvého ray traceru na RTX 3080.
+
+    Start: Dokumentace k PGR semestrálce.
+
+    XP: 400 | Tags: #graphics #cpp #rtx
+
+13. Interactive Algorithm Visualizer
+Vytvoř si v JavaScriptu (přímo v Obsidianu přes Canvas nebo DataviewJS) vizualizaci toho, jak funguje Dijkstra nebo A* pro ALG.
+
+    Start: Canvas API.
+
+    XP: 300 | Tags: #alg #obsidian #visuals
+
+14. LaTeX Template pro Protokoly
+Vytvoř si "pretty" šablonu v LaTeXu, která používá tvoje oblíbené barvy a fonty, aby tvoje protokoly z labin vypadaly lépe než všech ostatních.
+
+    Start: Overleaf nebo lokální texlive.
+
+    XP: 150 | Tags: #school #latex #design
+
+15. Git Flow for Game Dev
+Nastav si v repozitáři své hry "Git Hooks", které ti nedovolí commitnout kód, pokud v něm jsou základní chyby (linting).
+
+    Start: husky pro JS/Java.
+
+    XP: 200 | Tags: #coding #git
+
+🧘 Akt XIV: Mental Health & Self-Care (System Maintenance)
+
+Tady je důležité to "gamifikovat", aby tě to nevyčerpávalo.
+
+16. Meds Tracking Heatmap
+V Obsidianu si pomocí pluginu "Heatmap Calendar" vizualizuj, jak poctivě bereš léky. Cíl: Mít celý měsíc fialový.
+
+    Start: Tracker plugin + Daily Notes.
+
+    XP: 100 | Tags: #health #obsidian
+
+17. "Crisis Protocol" Button
+Vytvoř si na ploše Swaye/Macu tlačítko, které při stisknutí: 1. Pustí uklidňující playlist, 2. Otevře tvou "safe" stránku v Obsidianu, 3. Napíše Máje, že ti není dobře.
+
+    Start: Bash script + notify-send.
+
+    XP: 250 | Tags: #wellness #automation
+
+18. Digital Declutter (Sunday Routine)
+Každou neděli spusť skript, který vymaže plochu, promaže ~/Downloads a udělá backup tvého Vaultu.
+
+    Start: Cron job.
+
+    XP: 50 | Tags: #productivity #adhd
+
+19. Social Energy Budget
+Vytvoř si v Obsidianu jednoduchý tracker "sociální energie". Po každém dnu ve škole si zapiš číslo 1-10. Pomůže ti to předpovědět vyhoření.
+
+    Start: Dataview metadata field.
+
+    XP: 150 | Tags: #wellness #stats
+
+20. Sunlight Tracker
+Zkus trackovat, kolik minut strávíš venku na slunci (přes Garminy). Propoj to s náladou v Obsidianu.
+
+    Start: Garmin Connect synchronizace.
+
+    XP: 150 | Tags: #health #data
+
+🎨 Akt XV: Music & Aesthetics
+
+FL Studio a tvůj vizuální styl.
+
+21. Sample Library Cleanup
+Použij AI tagování (např. Atlas nebo Sononym) k roztřídění tvých tisíců samplů podle tóniny a nálady.
+
+    Start: 1h analýzy samplů.
+
+    XP: 150 | Tags: #music #audio
+
+22. Custom VST Dashboard
+Vytvoř si v FL Studiu vlastní "Control Surface" pro své nejpoužívanější efekty, ať nemusíš pořád otevírat pluginy.
+
+    Start: Patcher v FL Studiu.
+
+    XP: 200 | Tags: #flstudio #workflow
+
+23. Lyrics "Idea Graveyard"
+Vytvoř si v Obsidianu stránku, kam budeš sypat všechny "špatné" texty. Jednou za měsíc z nich zkus vytáhnout jeden dobrý rým.
+
+    Start: Folder 🎵 Hudba/Graveyard.
+
+    XP: 100 | Tags: #creative #lyrics
+
+24. Aesthetic Terminal Screensaver
+Nastav si v Alacritty krásný screensaver (třeba neo-matrix s fialovými znaky nebo cbonsai).
+
+    Start: yay -S cbonsai.
+
+    XP: 50 | Tags: #ricing #sway
+
+25. Portfolio Auto-Deploy
+Nastav si, aby se tvoje portfolio na Vercelu automaticky updatovalo, kdykoliv přidáš novou hotovou věc do své "Showcase" složky v Obsidianu.
+
+    Start: GitHub Actions + Vercel Hook.
+
+    XP: 250 | Tags: #webdev #portfolio
+
+Chceš dalších 25, nebo ti tohle stačí jako "Season 2" pro tvůj Quest Log? (Pokud máš nějakou konkrétní otázku k tomu SDR nebo jak propojit Garminy s Archem, ptej se!)
+
+Tady je dalších 25 questů (26–50), které tvůj Quest Log posunou na úroveň profesionálního ricing & dev setupu. Jsou namířené na tvoji školu (FEL), tvůj hardware (G9, SDR, M5 Pro) a tvoje ADHD potřeby.
+🛰️ Akt XI: Signal & Radio (SDR Quests)
+
+Využij ten SDR dongle k něčemu jinému než jen k poslechu rádia.
+
+26. Meteorologické satelity (NOAA) Live
+Zachytit signál z NOAA družice, když přelétá nad Prahou, a dekódovat z něj aktuální snímek oblačnosti.
+
+    Start: Nainstaluj gpredict pro sledování polohy a noaa-apt pro dekódování.
+
+    XP: 450 | Tags: #sdr #space #arch
+
+27. ADSB Letecký Radar
+Vytvoř si lokální webovou mapu, která ukazuje všechna letadla nad Prahou v reálném čase pomocí tvého SDR.
+
+    Start: Spusť dump1090-fa v terminálu na Archu.
+
+    XP: 200 | Tags: #sdr #aviation #arch
+
+28. SDR FM/DAB+ Station Explorer
+Napiš jednoduchý bash script (nebo použij rtl_fm), který ti v terminálu vylepší "skenování" lokálních rádií a uloží tvoje oblíbené frekvence do Obsidianu.
+
+    Start: yay -S rtl-sdr.
+
+    XP: 100 | Tags: #sdr #bash
+
+🖥️ Akt XII: Arch & Sway (Ultrawide G9 Mastery)
+
+Tvůj Samsung G9 OLED si zaslouží víc než jen tři okna vedle sebe.
+
+29. G9 3-Zone Layout Engine
+Nadefinuj si ve Swayi přesné rozměry pro "Mastering Layout" (střední zóna na kód, postranní na dokumentaci a terminál), aby se okna nedeformovala.
+
+    Start: Uprav ~/.config/sway/config a nadefinuj assign pravidla.
+
+    XP: 250 | Tags: #sway #ricing #ultrawide
+
+30. Waybar "Health" Bar
+Vytvoř si custom modul do Waybaru, který bude měnit barvu (fialová -> červená) podle toho, jak moc ti Garminy hlásí stres nebo nízkou Body Battery.
+
+    Start: Propoj garmin-connect-export s jednoduchým python scriptem pro Waybar.
+
+    XP: 350 | Tags: #arch #waybar #health
+
+31. Pacman Update Notifier (Dunst)
+Nastav si hook, který ti přes Dunst pošle notifikaci s ikonkou, kolik balíčků je potřeba aktualizovat, ale jen když nejsi ve "Focus Módu".
+
+    Start: Script s checkupdates.
+
+    XP: 100 | Tags: #arch #automation
+
+32. Sway Scratchpad: "Evelyn's AI Terminal"
+Zkratka, která ti uprostřed obrazovky vyhodí plovoucí terminál s už běžícím lokálním LLM (přes Ollama), připraveným na rychlé dotazy.
+
+    Start: swaymsg [app_id="ai_term"] scratchpad show.
+
+    XP: 150 | Tags: #sway #ai
+
+🎓 Akt XIII: FEL CVUT (OI Student Life)
+
+Hackni si studium, ať ti zbyde víc času na hru a hudbu.
+
+33. SSH Tunnel Optimization (Mac ↔ FEL)
+Nastav si SSH config tak, aby ses na školní servery (progres atd.) přihlašovala jedním slovem bez hesla a s automatickým připojením tvého VS Code.
+
+    Start: ssh-keygen + úprava ~/.ssh/config.
+
+    XP: 150 | Tags: #fel #productivity #macOS
+
+34. PGR: Raytracing Shader "Glow" Effect
+Implementuj do své PGR semestrálky custom bloom/glow efekt pro světelné zdroje. Na G9 OLED to bude vypadat naprosto insane.
+
+    Start: Fragment shader -> implementace Gaussian blur.
+
+    XP: 400 | Tags: #pgr #graphics #cpp
+
+35. ALG Visualizer v Obsidianu
+Pomocí pluginu Mermaid nebo DataviewJS si vytvoř interaktivní stromovou strukturu pro Binary Search Tree nebo Heap, aby ses to nemusela učit z papíru.
+
+    Start: Vytvoř soubor Algorithm_Visualizer.md.
+
+    XP: 250 | Tags: #alg #obsidian
+
+36. Moodle Auto-Downloader
+Script, který se podívá na Moodle a stáhne všechny nové PDF materiály z PGR a OSY do tvé školní složky.
+
+    Start: Použij Python s knihovnou requests nebo selenium.
+
+    XP: 300 | Tags: #fel #python #automation
+
+🎮 Akt XIV: Game Dev (Mundane Mountain)
+
+Posuň svoji Celeste-like hru na další level.
+
+37. "Coyote Time" & "Jump Buffering"
+Implementuj tyto dvě mechaniky do svého Java enginu. Udělá to hru mnohem férovější a "smooth" (pocit z ovládání jako v Celeste).
+
+    Start: Přidej coyoteTimer proměnnou do své Player třídy.
+
+    XP: 300 | Tags: #gamedev #java #pjv
+
+38. Particle System pro Dash
+Vytvoř jednoduchý částicový systém, který za postavou zanechá fialovou stopu (trail), když použije dash.
+
+    Start: Třída ParticleEmitter, která spawnuje sprity s klesající alphou.
+
+    XP: 250 | Tags: #gamedev #graphics
+
+39. Tilemap Parser z JSONu
+Místo textových souborů začni používat exporty z editoru Tiled (JSON). Umožní ti to mít v levelech víc vrstev a objektů.
+
+    Start: Knihovna Jackson nebo Gson pro parsování v Javě.
+
+    XP: 350 | Tags: #gamedev #java
+
+🎵 Akt XV: Music & Creative (FL Studio & Lyrics)
+
+Dopamin skrze zvuk.
+
+40. Prague Metro Sample Pack
+Nahrát na iPhone zvuky z metra (hlášení, zavírání dveří, jízda v tunelu) a vytvořit z nich industriální beat v FL Studiu.
+
+    Start: 10 nahrávek z trasy A nebo B.
+
+    XP: 200 | Tags: #music #audio #prague
+
+41. FL Studio "ADHD-Friendly" Template
+Vytvoř si projektovou šablonu, kde je všechno barevně sladěné (fialová/růžová) a nejdůležitější pluginy jsou už na mixu.
+
+    Start: Ulož projekt jako .flp do složky Templates.
+
+    XP: 100 | Tags: #flstudio #workflow
+
+42. Casio MIDI Mapping
+Namapuj si knoby a fadery na svém Casiu tak, aby ovládaly filtry a efekty přímo v FL Studiu bez sahání na myš.
+
+    Start: Multilink to controllers v FL.
+
+    XP: 150 | Tags: #music #hardware
+
+🧘 Akt XVI: Wellness & Infrastructure (Evelyn OS)
+
+Udržuj systém i sebe v chodu.
+
+43. "Crisis Mode" Terminal UI
+Napiš jednoduché TUI v Pythonu/Bashi, které ti při spuštění položí 3 otázky: "Vzala jsi si léky?", "Pila jsi?", "Chceš mluvit s AI/Májou?".
+
+    Start: Použij knihovnu rich v Pythonu pro hezký vzhled.
+
+    XP: 300 | Tags: #wellness #python
+
+44. Tailscale Mesh Network
+Propoj Mac, Arch PC a Steam Deck do jedné privátní sítě. Můžeš pak SSH-čkovat do PC z Macu, i když jsi zrovna na fakultě v Dejvicích.
+
+    Start: sudo tailscale up na všech zařízeních.
+
+    XP: 200 | Tags: #network #infrastructure
+
+45. Body Battery Dashboard v Obsidianu
+Vytvoř si tabulku, kde uvidíš korelaci mezi tvým spánkem a tím, kolik řádků kódu jsi ten den napsala (přes Git stats).
+
+    Start: Plugin Dataview + Tracker.
+
+    XP: 350 | Tags: #health #data
+
+46. Estrogen Reminder Aesthetic
+Vytvoř si vizuálně krásnou notifikaci (třeba přes dunstify s custom ikonkou), která ti jednou týdně připomene Neofolin.
+
+    Start: Systemd timer na Archu.
+
+    XP: 50 | Tags: #health #automation
+
+47. Obsidian "Lyrics Vault" Auto-Sync
+Nastav si, aby se tvoje texty z iPhone (Files) automaticky syncovaly do Obsidianu, jakmile přijdeš domů na Wi-Fi.
+
+    Start: Nastavení Syncthing na mobilu.
+
+    XP: 150 | Tags: #creative #sync
+
+48. Steam Deck Saves Sync (Non-Steam)
+Zprovozni automatický sync savů pro hry mimo Steam (třeba emulátory) mezi Deckem a tvým PC přes Syncthing.
+
+    Start: Instalace Syncthing v Desktop módu Decku.
+
+    XP: 250 | Tags: #gaming #steamos
+
+49. Anker 165W Charging Log
+Napiš skript, který bude logovat rychlost nabíjení tvého Macu a kreslit ti graf v Obsidianu. Jen proto, že ta statistika vypadá cool.
+
+    Start: system_profiler SPPowerDataType.
+
+    XP: 100 | Tags: #hardware #stats
+
+50. "The Year One" Reflection
+Hlavní quest: Napsat 2000 slov o svém prvním roce na FELu, své tranzici a svém tech progresu do "vnitřního" Obsidianu.
+
+    Start: Vytvoř soubor 2025_Reflection.md.
+
+    XP: 500 | Tags: #identity #milestone
+
+Máš teď v ruce 50 detailních questů. Stačí je zkopírovat do tvého evelyn-quest-log.md (nebo nechat Claude Code, ať je tam přidá) a začít odškrtávat! Chceš pak pomoct s dalšími 50, nebo se teď zaměříme na implementaci některého z nich?

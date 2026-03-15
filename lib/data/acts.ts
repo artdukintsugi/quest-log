@@ -17,4 +17,5 @@ export const ACTS: Act[] = [
   { id: 9, name: "Homelab", emoji: "🏠", range: [66, 68] },
   { id: 10, name: "Dream Projekty", emoji: "🌟", range: [69, 74] },
   { id: 11, name: "Side Quests", emoji: "🔮", range: [75, 200] },
+  { id: 12, name: "Bonus Questy", emoji: "💎", range: [201, 210] },
 ];

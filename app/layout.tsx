@@ -4,6 +4,7 @@ import "./globals.css";
 import { QuestProvider } from "@/context/QuestContext";
 import Sidebar from "@/components/layout/Sidebar";
 import BottomNav from "@/components/layout/BottomNav";
+import AppShell from "@/components/AppShell";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -18,29 +19,24 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Evelyn's Quest Log",
+  title: "Quest Log — Evelyn",
   description: "200 questy. XP systém. Gamifikovaný život.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="cs" className={`${fraunces.variable} ${outfit.variable}`}>
-      <body
-        className="min-h-screen"
-        style={{ backgroundColor: "var(--bg-primary)" }}
-      >
+      <body style={{ backgroundColor: "var(--bg-primary)" }}>
         <QuestProvider>
-          <div className="flex min-h-screen">
-            <Sidebar />
-            <main className="flex-1 min-h-screen pb-20 lg:pb-0 overflow-x-hidden">
-              {children}
-            </main>
-          </div>
-          <BottomNav />
+          <AppShell>
+            <div className="flex min-h-screen">
+              <Sidebar />
+              <main className="flex-1 pb-20 lg:pb-0 overflow-x-hidden">
+                {children}
+              </main>
+            </div>
+            <BottomNav />
+          </AppShell>
         </QuestProvider>
       </body>
     </html>
