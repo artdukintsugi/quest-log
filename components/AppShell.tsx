@@ -9,7 +9,23 @@ import { soundLevelUp, soundAchievement, soundComplete } from "@/lib/sounds";
 import { fireAchievement } from "@/lib/confetti";
 import CommandPalette from "@/components/ui/CommandPalette";
 
+// Apply accent color + dark mode from localStorage on every mount
+function useGlobalTheme() {
+  useEffect(() => {
+    try {
+      const settings = JSON.parse(localStorage.getItem("evelyn-settings") || "{}");
+      const root = document.documentElement;
+      if (settings.accentColor) root.style.setProperty("--accent-primary", settings.accentColor);
+      if (settings.darkMode === "oled") root.style.setProperty("--bg-primary", "#000000");
+      if (settings.highContrast) root.style.setProperty("--text-primary", "#ffffff");
+      if (settings.glowEffects === false) root.classList.add("no-glow");
+      if (settings.animationsEnabled === false) root.classList.add("reduce-motion");
+    } catch { /* ignore */ }
+  }, []);
+}
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  useGlobalTheme();
   const { justLeveledUp, newLevel, clearLevelUp, newlyUnlockedAchievements, clearNewAchievements } = useQuestContext();
   const [toasts, setToasts] = useState<ToastData[]>([]);
 

@@ -103,6 +103,11 @@ export default function VibePalette() {
     setActive(album.id);
     applyPalette(album);
     localStorage.setItem(STORAGE_KEY, album.id);
+    // Sync to evelyn-settings so AppShell re-applies on navigation
+    try {
+      const s = JSON.parse(localStorage.getItem("evelyn-settings") || "{}");
+      localStorage.setItem("evelyn-settings", JSON.stringify({ ...s, accentColor: album.accent }));
+    } catch { /* ignore */ }
     setOpen(false);
   }
 
