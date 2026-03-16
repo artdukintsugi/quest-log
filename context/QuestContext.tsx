@@ -73,8 +73,30 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
     const loaded = loadState();
     // Sync daily bonus on mount
     const synced = syncDailyBonus(loaded);
-    if (synced !== loaded) saveState(synced);
-    setState(synced);
+
+    // Reset recurring quests whose reset timer has passed
+    const now = new Date().toISOString();
+    let needsSave = synced !== loaded;
+    const resetStates = { ...synced.questStates };
+    for (const [idStr, qs] of Object.entries(resetStates)) {
+      if (qs.completed && (qs as { recurringResetAt?: string }).recurringResetAt) {
+        const resetAt = (qs as { recurringResetAt?: string }).recurringResetAt!;
+        if (resetAt <= now) {
+          const quest = QUESTS.find((q) => q.id === Number(idStr));
+          if (quest?.recurring) {
+            resetStates[Number(idStr)] = {
+              completed: false,
+              completedAt: undefined,
+              checkpoints: quest.checkpoints.map(() => false),
+            };
+            needsSave = true;
+          }
+        }
+      }
+    }
+    const final = needsSave ? { ...synced, questStates: resetStates } : synced;
+    if (needsSave) saveState(final);
+    setState(final);
   }, []);
 
   const checkAchievements = useCallback(
@@ -174,12 +196,20 @@ export function QuestProvider({ children }: { children: React.ReactNode }) {
         const curLevel = levelInfo.current.level;
 
         // ── SPECIAL attributes ───────────────────────────────────────────
+        // For recurring quests, schedule a reset after 24h (daily) or 7 days (weekly)
+        const recurringReset = quest.recurring
+          ? new Date(
+              Date.now() + (quest.recurring === "daily" ? 86400000 : 604800000)
+            ).toISOString()
+          : undefined;
+
         const newQuestStates = {
           ...prev.questStates,
           [questId]: {
             completed: true,
             completedAt: new Date().toISOString(),
             checkpoints: quest.checkpoints.map(() => true),
+            recurringResetAt: recurringReset,
           },
         };
         const newSpecial = computeSpecial(newQuestStates, QUESTS);

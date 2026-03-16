@@ -295,7 +295,10 @@ a, button, [role="button"], select, label[for], input[type="checkbox"] {
 
 /* === SIDEBAR GRADIENT === */
 .sidebar-gradient {
-  background: var(--bg-primary);
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-right: 1px solid rgba(139, 92, 246, 0.09);
   position: relative;
 }
 

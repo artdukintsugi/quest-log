@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { QUESTS } from "@/lib/data/quests";
 import { ACTS } from "@/lib/data/acts";
 import { SKILL_DOMAINS, SKILL_CATEGORIES } from "@/lib/data/skills";
@@ -9,14 +10,25 @@ import { getQuestStatus } from "@/lib/utils";
 import { useQuestContext } from "@/context/QuestContext";
 import QuestCard from "@/components/quest/QuestCard";
 import EmptyState from "@/components/ui/EmptyState";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Shuffle } from "lucide-react";
 
 type StatusFilter = "all" | "available" | "completed" | "locked";
 type SortBy = "id" | "xp" | "difficulty";
 
 export default function QuestsPage() {
+  const router = useRouter();
   const { state } = useQuestContext();
   const [search, setSearch] = useState("");
+
+  const handleSurpriseMe = useCallback(() => {
+    const available = QUESTS.filter((q) => {
+      const s = getQuestStatus(q.id, state.questStates, q.prerequisites);
+      return s === "available";
+    });
+    if (available.length === 0) return;
+    const pick = available[Math.floor(Math.random() * available.length)];
+    router.push(`/quests/${pick.id}`);
+  }, [state.questStates, router]);
   const [actFilter, setActFilter] = useState(0);
   const [diffFilter, setDiffFilter] = useState(0);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -87,9 +99,23 @@ export default function QuestsPage() {
         >
           Quest Log
         </h1>
-        <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-          {completedCount} / {QUESTS.length} dokončeno
-        </p>
+        <div className="flex items-center gap-3 mt-1 flex-wrap">
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+            {completedCount} / {QUESTS.length} dokončeno
+          </p>
+          <button
+            onClick={handleSurpriseMe}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all duration-200 hover:scale-105"
+            style={{
+              backgroundColor: "rgba(139,92,246,0.1)",
+              border: "1px solid rgba(139,92,246,0.25)",
+              color: "var(--accent-secondary)",
+            }}
+            title="Náhodný dostupný quest"
+          >
+            <Shuffle size={12} /> Surprise Me
+          </button>
+        </div>
       </div>
 
       {/* Filters */}

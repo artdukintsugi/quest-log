@@ -34,4 +34,15 @@ export const ACTS: Act[] = [
   { id: 26, name: "GitHub Student Pack", emoji: "🎓", range: [251, 265] },
   { id: 27, name: "Pre-M5 Sprint", emoji: "🚀", range: [501, 550] },
   { id: 28, name: "Hyperfocus Vision", emoji: "🧠", range: [551, 600] },
+  // ── INSANE.md — 1001 extra quests ─────────────────────────────────────────
+  { id: 29, name: "Arch & Terminal", emoji: "🖥️", range: [601, 700] },
+  { id: 30, name: "Mac & Apple", emoji: "🍎", range: [701, 800] },
+  { id: 31, name: "FEL Extended", emoji: "🎓", range: [801, 900] },
+  { id: 32, name: "Creative Production", emoji: "🎵", range: [901, 1000] },
+  { id: 33, name: "Gaming & Gear", emoji: "🎮", range: [1001, 1100] },
+  { id: 34, name: "Next.js Extended", emoji: "💻", range: [1101, 1200] },
+  { id: 35, name: "SDR & Electronics", emoji: "📻", range: [1201, 1250] },
+  { id: 36, name: "Music & Kanye", emoji: "🎹", range: [1251, 1300] },
+  { id: 37, name: "Identity & Wellness", emoji: "🧠", range: [1301, 1400] },
+  { id: 38, name: "Hardware & Meta", emoji: "🚀", range: [1401, 1601] },
 ];

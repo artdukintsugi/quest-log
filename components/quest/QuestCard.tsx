@@ -27,6 +27,8 @@ export default function QuestCard({ quest, compact = false, index = 0, highlight
   const [showAI, setShowAI] = useState(false);
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
 
+  const isBoss = quest.tags.includes("#legendary") || quest.difficulty === 5;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -74,28 +76,42 @@ export default function QuestCard({ quest, compact = false, index = 0, highlight
             status === "completed" ? "shimmer-completed" : "glass-hover"
           }`}
           style={{
-            backgroundColor:
-              status === "locked" ? "rgba(12,12,18,0.5)" : "var(--bg-secondary)",
-            borderColor:
-              status === "completed"
-                ? "rgba(34,197,94,0.25)"
-                : status === "available"
-                ? "rgba(139,92,246,0.15)"
-                : "rgba(100,116,139,0.08)",
+            backgroundColor: isBoss && status !== "locked"
+              ? "rgba(30,10,40,0.9)"
+              : status === "locked" ? "rgba(12,12,18,0.5)" : "var(--bg-secondary)",
+            borderColor: isBoss && status === "available"
+              ? "rgba(220,38,127,0.35)"
+              : status === "completed"
+              ? "rgba(34,197,94,0.25)"
+              : status === "available"
+              ? "rgba(139,92,246,0.18)"
+              : "rgba(100,116,139,0.08)",
             opacity: status === "locked" ? 0.5 : 1,
-            boxShadow: status === "completed"
+            boxShadow: isBoss && status === "available"
+              ? "0 0 20px rgba(220,38,127,0.12), 0 0 6px rgba(139,92,246,0.15), 0 2px 12px rgba(0,0,0,0.3)"
+              : status === "completed"
               ? "0 0 16px rgba(34,197,94,0.06)"
               : status === "available"
-              ? "0 2px 12px rgba(0,0,0,0.2)"
+              ? "0 0 12px rgba(139,92,246,0.08), 0 2px 12px rgba(0,0,0,0.2)"
               : "none",
           }}
         >
           {/* Subtle accent gradient for available quests */}
-          {status === "available" && (
+          {status === "available" && !isBoss && (
             <div
               className="absolute top-0 right-0 w-32 h-32 pointer-events-none"
               style={{
                 background: "radial-gradient(circle at top right, rgba(139,92,246,0.06), transparent 70%)",
+              }}
+            />
+          )}
+
+          {/* Boss Mode glow */}
+          {isBoss && status !== "locked" && (
+            <div
+              className="absolute top-0 right-0 w-40 h-40 pointer-events-none"
+              style={{
+                background: "radial-gradient(circle at top right, rgba(220,38,127,0.1), rgba(139,92,246,0.06) 50%, transparent 70%)",
               }}
             />
           )}
@@ -116,9 +132,15 @@ export default function QuestCard({ quest, compact = false, index = 0, highlight
               </span>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
+              {isBoss && status !== "locked" && (
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
+                  style={{ color: "#f472b6", backgroundColor: "rgba(220,38,127,0.1)", border: "1px solid rgba(220,38,127,0.25)" }}>
+                  BOSS
+                </span>
+              )}
               {status === "completed" && <CheckCircle2 size={17} style={{ color: "var(--success)", filter: "drop-shadow(0 0 4px rgba(34,197,94,0.4))" }} />}
               {status === "locked" && <Lock size={14} style={{ color: "var(--text-muted)" }} />}
-              {status === "available" && <ChevronRight size={14} style={{ color: "var(--text-muted)" }} />}
+              {status === "available" && !isBoss && <ChevronRight size={14} style={{ color: "var(--text-muted)" }} />}
             </div>
           </div>
 

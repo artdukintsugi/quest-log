@@ -16,6 +16,7 @@ import {
   ChevronLeft, ChevronRight, Lock, CheckCircle2, Clock, Zap, ArrowLeft
 } from "lucide-react";
 import AskAIModal from "@/components/quest/AskAIModal";
+import PomodoroTimer from "@/components/ui/PomodoroTimer";
 
 export default function QuestDetailPage() {
   const params = useParams();
@@ -131,6 +132,9 @@ export default function QuestDetailPage() {
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <DifficultyStars difficulty={quest.difficulty} />
+          {status === "available" && (
+            <PomodoroTimer questTitle={quest.title} onComplete={allCheckpointsDone ? handleComplete : undefined} />
+          )}
           <span
             className="font-bold font-mono text-sm px-2 py-0.5 rounded"
             style={{
@@ -225,14 +229,26 @@ export default function QuestDetailPage() {
                     onChange={(e) => handleCheckpoint(i, e.target.checked)}
                     className="quest-checkbox"
                   />
-                  <span
-                    className="text-sm transition-all duration-200"
-                    style={{
-                      color: done ? "var(--text-muted)" : "var(--text-secondary)",
-                      textDecoration: done ? "line-through" : "none",
-                    }}
-                  >
+                  <span className="relative text-sm transition-colors duration-300"
+                    style={{ color: done ? "var(--text-muted)" : "var(--text-secondary)" }}>
                     {cp}
+                    {done && (
+                      <svg
+                        className="absolute inset-0 w-full overflow-visible pointer-events-none"
+                        style={{ top: "50%", height: "2px" }}
+                        preserveAspectRatio="none"
+                      >
+                        <motion.line
+                          x1="0" y1="1" x2="100%" y2="1"
+                          stroke="rgba(139,92,246,0.55)"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                        />
+                      </svg>
+                    )}
                   </span>
                 </motion.label>
               );

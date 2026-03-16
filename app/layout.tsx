@@ -23,8 +23,11 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Quest Log — Evelyn",
-  description: "210 questů. XP systém. Gamifikovaný život.",
+  title: {
+    default: "Quest Log — Evelyn",
+    template: "%s | Quest Log",
+  },
+  description: "1363 questů. XP systém. Gamifikovaný život.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
